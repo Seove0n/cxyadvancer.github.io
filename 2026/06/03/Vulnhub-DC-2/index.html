@@ -1,256 +1,206 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 8.1.1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"cxyadvancer.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="环境配置修改模式改为NAT模式  ​                  当前网段为192.168.100.0&#x2F;24 信息搜集首先扫描网段 1arp-scan -l   192.168.100.135就是目标靶机。nmap扫描一下 1nmap -A 192.168.100.135   扫描结果有80端口， Apache httpd 2.4.10 ((Debian))， 1Did not f">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Vulnhub-DC:2 | Seove0n</title><meta name="author" content="Seove0n"><meta name="copyright" content="Seove0n"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="环境配置修改模式改为NAT模式  ​                  当前网段为192.168.100.0&#x2F;24 信息搜集首先扫描网段 1arp-scan -l   192.168.100.135就是目标靶机。nmap扫描一下 1nmap -A 192.168.100.135   扫描结果有80端口， Apache httpd 2.4.10 ((Debian))， 1Did not f">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vulnhub-DC:2">
 <meta property="og:url" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/index.html">
-<meta property="og:site_name" content="程序元的blog">
+<meta property="og:site_name" content="Seove0n">
 <meta property="og:description" content="环境配置修改模式改为NAT模式  ​                  当前网段为192.168.100.0&#x2F;24 信息搜集首先扫描网段 1arp-scan -l   192.168.100.135就是目标靶机。nmap扫描一下 1nmap -A 192.168.100.135   扫描结果有80端口， Apache httpd 2.4.10 ((Debian))， 1Did not f">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603155617458.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603155606601.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603155852876.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603160449778.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603162226301.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603162518524.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603162951321.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603163119555.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603191722896.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603211304173.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603211737655.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603212717505.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603213149569.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603213535306.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603214213925.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603214622820.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603214718171.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603214827654.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/image/2.jpg">
 <meta property="article:published_time" content="2026-06-03T07:53:12.000Z">
 <meta property="article:modified_time" content="2026-06-03T14:00:25.766Z">
-<meta property="article:author" content="程序元">
+<meta property="article:author" content="Seove0n">
 <meta property="article:tag" content="渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/image-20260603155617458.png">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/image/2.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Vulnhub-DC:2",
+  "url": "https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/",
+  "image": "https://cxyadvancer.github.io/image/2.jpg",
+  "datePublished": "2026-06-03T07:53:12.000Z",
+  "dateModified": "2026-06-03T14:00:25.766Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Seove0n",
+      "url": "https://cxyadvancer.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/image/2.jpg"><link rel="canonical" href="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
-<link rel="canonical" href="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>Vulnhub-DC:2 | 程序元的blog</title>
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
   
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
 
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">程序元的blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
+      const theme = saveToLocal.get('theme')
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="程序元">
-      <meta itemprop="description" content="路漫漫其修远兮，吾将上下而求索。">
-    </span>
-    
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程序元的blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Vulnhub-DC:2
-        </h1>
-    
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-    
-              <time title="创建时间：2026-06-03 15:53:12 / 修改时间：22:00:25" itemprop="dateCreated datePublished" datetime="2026-06-03T15:53:12+08:00">2026-06-03</time>
-            </span>
-    
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-             <span></span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>undefined 分钟</span>
-            </span>
-    
-        </div>
-      </header>
-    
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
       
-        <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>修改模式改为NAT模式</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603155617458.png" alt="image-20260603155617458"></p>
-<p>​                 <img src="/2026/06/03/Vulnhub-DC-2/image-20260603155606601.png" alt="image-20260603155606601"></p>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Vulnhub-DC:2',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="bg-animation" id="web_bg" style="background-image: url(/image/2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Seove0n</span></a><a class="nav-page-title" href="/"><span class="site-name">Vulnhub-DC:2</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Vulnhub-DC:2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-03T07:53:12.000Z" title="发表于 2026-06-03 15:53:12">2026-06-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-03T14:00:25.766Z" title="更新于 2026-06-03 22:00:25">2026-06-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">729</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>修改模式改为NAT模式</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603155617458.png" alt="image-20260603155617458"></p>
+<p>​                 <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603155606601.png" alt="image-20260603155606601"></p>
 <p>当前网段为192.168.100.0&#x2F;24</p>
 <h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>首先扫描网段</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp-scan -l</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603155852876.png" alt="image-20260603155852876"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603155852876.png" alt="image-20260603155852876"></p>
 <p>192.168.100.135就是目标靶机。nmap扫描一下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -A 192.168.100.135</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603160449778.png" alt="image-20260603160449778"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603160449778.png" alt="image-20260603160449778"></p>
 <p>扫描结果有80端口， Apache httpd 2.4.10 ((Debian))，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Did not follow redirect to http://dc-2/</span><br></pre></td></tr></table></figure>
 
@@ -265,266 +215,61 @@
 <p>web指纹信息</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whatweb -v 192.168.100.135</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603162226301.png" alt="image-20260603162226301"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603162226301.png" alt="image-20260603162226301"></p>
 <p>WordPress 4.7.10 + Apache2.4.10 Debian</p>
 <h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p>首先访问网站就可以得到flag1</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603162518524.png" alt="image-20260603162518524"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603162518524.png" alt="image-20260603162518524"></p>
 <p>你常用的单词列表可能不管用，所以，或许你需要发挥一下自己的特长。</p>
 <p>密码越多越好，但有时候你不可能每次都成功。</p>
 <p>用一个账号登录，看看下一个flag。</p>
 <p>如果找不到，就用另一个账号登录。</p>
 <p>这里说到要登入，但是登入进去前端没有登入接口，dirsearch扫一下</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603162951321.png" alt="image-20260603162951321"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603162951321.png" alt="image-20260603162951321"></p>
 <p>访问一下wp-login.php</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603163119555.png" alt="image-20260603163119555"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603163119555.png" alt="image-20260603163119555"></p>
 <p>找到登入界面，尝试弱口令爆破无果，使用扫描WordPress站点的工具wpscan</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpscan --url 192.168.100.135 -e u</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603191722896.png" alt="image-20260603191722896"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603191722896.png" alt="image-20260603191722896"></p>
 <p>扫出来了3个用户名，接下来使用cewl生成一个字典</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cewl http://dc-2 &gt;payload.txt</span><br></pre></td></tr></table></figure>
 
 <p>然后开始爆破</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpscan --url http://dc-2 -password payload.txt</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603211304173.png" alt="image-20260603211304173"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603211304173.png" alt="image-20260603211304173"></p>
 <p>成功爆破出密码，登入jerry&#x2F;adipiscing</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603211737655.png" alt="image-20260603211737655"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603211737655.png" alt="image-20260603211737655"></p>
 <p>如果你无法利用 WordPress 走捷径，还有另一种方法。</p>
 <p>希望你能找到其他切入点。</p>
 <p>这里说找其他切入点，刚才nmap扫端口的时候只有这个80端口，这里其实有一个坑，默认扫描的是常见的1000端口，这里全量扫描</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV  192.168.100.135 -p-</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603212717505.png" alt="image-20260603212717505"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603212717505.png" alt="image-20260603212717505"></p>
 <p>还有一个7744有ssh服务，用tom账号登入一下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh @tom192.168.100.135 -p 7744</span><br></pre></td></tr></table></figure>
 
 <p>登入成功读一下flag3.txt</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603213149569.png" alt="image-20260603213149569"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603213149569.png" alt="image-20260603213149569"></p>
 <p>这里受到rbash的限制，使用less命令读文件</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603213535306.png" alt="image-20260603213535306"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603213535306.png" alt="image-20260603213535306"></p>
 <p>可怜的老 Tom 总在追逐 Jerry，或许他可以通过<code>su</code>命令切换用户来解决问题。</p>
 <p>这里切换一下用户需要绕过限制</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BASH_CMDS[a]=/bin/sh;a</span><br><span class="line">export PATH=$PATH:/bin</span><br></pre></td></tr></table></figure>
 
 <p>在jerry家找到了flag4.txt</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603214213925.png" alt="image-20260603214213925"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603214213925.png" alt="image-20260603214213925"></p>
 <p>很高兴看到你走到这一步——但你还没到家呢。</p>
 <p>你还需要拿到最后一面旗帜（唯一真正重要的旗帜！！！）。</p>
 <p>这里没有任何提示——现在只能靠你自己了。:-)</p>
 <p>加油——离开这里！！！！</p>
 <p>需要jerry用户git提权到root</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603214622820.png" alt="image-20260603214622820"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603214622820.png" alt="image-20260603214622820"></p>
 <p>这里看到看到可以免密执行git命令</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo git -p help config</span><br><span class="line">!/bin/bash</span><br></pre></td></tr></table></figure>
 
 <p>用 root 权限分页查看 git config 的帮助说明，-p是强制启用分页器<code>less</code>查看文档，运行后会进入到less分页阅读界面，less的一个功能就是输入 <code>!+命令</code> 就能<strong>直接调用系统 shell</strong>，而且当前整个进程是 root 权限，可以提权</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603214718171.png" alt="image-20260603214718171"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603214718171.png" alt="image-20260603214718171"></p>
 <p>提权成功，得到flag</p>
-<p><img src="/2026/06/03/Vulnhub-DC-2/image-20260603214827654.png" alt="image-20260603214827654"></p>
-
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B8%97%E9%80%8F/" rel="tag"># 渗透</a>
-          </div>
-    
-        
-
-    
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2026/06/02/Vulnhub-DC-1/" rel="prev" title="Vulnhub-DC:1">
-      <i class="fa fa-chevron-left"></i> Vulnhub-DC:1
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">信息搜集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">漏洞利用</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">程序元</p>
-  <div class="site-description" itemprop="description">路漫漫其修远兮，吾将上下而求索。</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">18</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2025 – 
-  <span itemprop="copyrightYear">2026</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">程序元</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">420k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">6:22</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
-</html>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/06/03/Vulnhub-DC-2/image-20260603214827654.png" alt="image-20260603214827654"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io">Seove0n</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/">https://cxyadvancer.github.io/2026/06/03/Vulnhub-DC-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxyadvancer.github.io" target="_blank">Seove0n</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F/">渗透</a></div><div class="post-share"><div class="social-share" data-image="/image/2.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/06/04/Vulnhub-DC-3/" title="Vulnhub-DC-3"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Vulnhub-DC-3</div></div><div class="info-2"><div class="info-item-1">信息搜集首先信息搜集，扫描网段发现靶机ip192.168.100.136 1arp-scan -l   nmap扫一下端口 1nmap -sV 192.168.100.136   开放了80端口，web指纹信息 1whatweb -v 192.168.100.136   Web 服务：Apache&#x2F;2.4.18 (Ubuntu) CMS：Joomla 全站程序（MetaGenerator 标识） 前端组件：Bootstrap、jQuery、HTML5 页面存在密码输入框PasswordField[password] → /administrator后台登录页存在  存在 Joomla 会话 Cookie，确认站点正常运行 访问一下网站  这次只有一个 flag，一个入口点，没有任何线索。 要拿到 flag，你显然需要获得 root 权限。 如何获得 root 权限取决于你——当然，也取决于系统。 祝你好运——希望你能享受这个小挑战。:-) 漏洞利用分析知道cms是Joomla，使用joomscan分析下版本 1joomscan -url 192.168.100.136 ...</div></div></div></a><a class="pagination-related" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Vulnhub-DC:1</div></div><div class="info-2"><div class="info-item-1">环境配置首先环境配置，需要将靶机和kali设置为NAT模式   当前网段是192.168.100.0/24  信息搜集nmap扫一下网段，主机探测 1nmap -sn 192.168.100.0/24   192.168.100.134就是我们要打的靶机。全量扫描一下 1nmap -T4 -A 192.168.100.134   web指纹识别 1whatweb -v 192.168.100。134   信息搜集如下： 端口服务信息： 1234522/tcp：ssh服务开启，版本：OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)80/tcp：HTTP服务开启，版本：Apache httpd 2.2.22 ((Debian))111/tcp: rpcbind服务开启，版本：2-4 (RPC #100000)  web指纹信息： 1234567Apache/2.2.22 (Debian)PHP 5.4.45CMS Drupal 7JQuery  漏洞利用漏洞利用关键在CMS Drupal 7，使用metasploit查找一下相关漏洞  12us...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-02</div><div class="info-item-2">Vulnhub-DC:1</div></div><div class="info-2"><div class="info-item-1">环境配置首先环境配置，需要将靶机和kali设置为NAT模式   当前网段是192.168.100.0/24  信息搜集nmap扫一下网段，主机探测 1nmap -sn 192.168.100.0/24   192.168.100.134就是我们要打的靶机。全量扫描一下 1nmap -T4 -A 192.168.100.134   web指纹识别 1whatweb -v 192.168.100。134   信息搜集如下： 端口服务信息： 1234522/tcp：ssh服务开启，版本：OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)80/tcp：HTTP服务开启，版本：Apache httpd 2.2.22 ((Debian))111/tcp: rpcbind服务开启，版本：2-4 (RPC #100000)  web指纹信息： 1234567Apache/2.2.22 (Debian)PHP 5.4.45CMS Drupal 7JQuery  漏洞利用漏洞利用关键在CMS Drupal 7，使用metasploit查找一下相关漏洞  12us...</div></div></div></a><a class="pagination-related" href="/2026/06/04/Vulnhub-DC-3/" title="Vulnhub-DC-3"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-04</div><div class="info-item-2">Vulnhub-DC-3</div></div><div class="info-2"><div class="info-item-1">信息搜集首先信息搜集，扫描网段发现靶机ip192.168.100.136 1arp-scan -l   nmap扫一下端口 1nmap -sV 192.168.100.136   开放了80端口，web指纹信息 1whatweb -v 192.168.100.136   Web 服务：Apache&#x2F;2.4.18 (Ubuntu) CMS：Joomla 全站程序（MetaGenerator 标识） 前端组件：Bootstrap、jQuery、HTML5 页面存在密码输入框PasswordField[password] → /administrator后台登录页存在  存在 Joomla 会话 Cookie，确认站点正常运行 访问一下网站  这次只有一个 flag，一个入口点，没有任何线索。 要拿到 flag，你显然需要获得 root 权限。 如何获得 root 权限取决于你——当然，也取决于系统。 祝你好运——希望你能享受这个小挑战。:-) 漏洞利用分析知道cms是Joomla，使用joomscan分析下版本 1joomscan -url 192.168.100.136 ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="author-info-name">Seove0n</div><div class="author-info-description">路漫漫其修远兮，吾将上下而求索。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cxyadvancer"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cxyadvancer" target="_blank" title="Seove0n"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Seove0n 的博客！<br>专注 Web 安全、CTF 竞赛与渗透测试。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">信息搜集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/04/Vulnhub-DC-3/" title="Vulnhub-DC-3">Vulnhub-DC-3</a><time datetime="2026-06-04T04:47:07.000Z" title="发表于 2026-06-04 12:47:07">2026-06-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/03/Vulnhub-DC-2/" title="Vulnhub-DC:2">Vulnhub-DC:2</a><time datetime="2026-06-03T07:53:12.000Z" title="发表于 2026-06-03 15:53:12">2026-06-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1">Vulnhub-DC:1</a><time datetime="2026-06-02T06:46:29.000Z" title="发表于 2026-06-02 14:46:29">2026-06-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/11/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Fastjson反序列化漏洞">Fastjson反序列化漏洞</a><time datetime="2026-05-11T12:11:13.000Z" title="发表于 2026-05-11 20:11:13">2026-05-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-cc1%E9%93%BE/" title="java反序列化-cc1链">java反序列化-cc1链</a><time datetime="2026-04-27T11:33:14.000Z" title="发表于 2026-04-27 19:33:14">2026-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Seove0n</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div><div class="footer_custom_text">Seove0n's Security & CTF Blog</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="/js/tw_cn.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5"></script></div></div></body></html>

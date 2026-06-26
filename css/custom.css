@@ -1,0 +1,107 @@
+/* ===================================
+ * Butterfly 主题自定义样式 - Seove0n
+ * =================================== */
+
+/* 全屏背景图 */
+html, body {
+  min-height: 100vh;
+}
+
+body {
+  background: url(/image/2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
+}
+
+/* 主容器透明，露出背景图 */
+#body-wrap,
+#content-inner,
+.layout,
+#page,
+#archive,
+#category,
+#tag {
+  background: transparent !important;
+}
+
+/* 首页 Hero Banner */
+#page-header {
+  background-attachment: fixed;
+}
+
+/* 卡片圆角微调 */
+.card-widget,
+.recent-post-info,
+#recent-posts > .recent-post-item {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* 文章卡片悬停效果 */
+#recent-posts > .recent-post-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 代码块样式优化 */
+figure.highlight {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 侧边栏卡片间距 */
+.card-widget {
+  margin-bottom: 16px;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #49B1F5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 选中文字颜色 */
+::selection {
+  background: #00c4b6;
+  color: #fff;
+}
+
+/* 链接动画 */
+a {
+  transition: all 0.2s ease;
+}
+
+/* 图片圆角 */
+#article-container img {
+  border-radius: 8px;
+}
+
+/* 页脚完全透明 — 覆盖主题默认蓝色 */
+#footer {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+#footer-wrap,
+#footer-bar,
+.footer-inner,
+#footer-deal {
+  background: transparent !important;
+  background-color: transparent !important;
+}

